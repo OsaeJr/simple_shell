@@ -35,7 +35,7 @@ void printEnvironment(char **environment)
 
 	while (environment[index])
 	{
-		write(STDOUT_FILENO, environment[index], _strlen(environment[index]));
+		write(STDOUT_FILENO, environment[index], _strlen_custom(environment[index]));
 		write(STDOUT_FILENO, "\n", 1);
 		index++;
 	}
