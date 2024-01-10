@@ -31,7 +31,7 @@ void exitCommand(char **arguments, char *inputString, int exitCode)
  */
 void printEnvironment(char **environment)
 {
-	size_t index = 0;
+	unsigned int index = 0;
 
 	while (environment[index])
 	{
