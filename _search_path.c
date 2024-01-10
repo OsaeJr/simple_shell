@@ -10,7 +10,8 @@
 int _search_path(char **command, char **env)
 {
 	char *token = NULL, *path_rel = NULL, *path_abs = NULL;
-	unsigned int len_command, len_token;
+	unsigned int len_command;
+	unsigned int len_token;
 	struct stat stat_info;
 
 	if (stat(*command, &stat_info) == 0)
@@ -22,11 +23,11 @@ int _search_path(char **command, char **env)
 		return (-1);
 
 	token = custom_strtok(path_rel, ":");
-	len_command = _strlen(*command);
+	len_command =  _strlen_custom(*command);
 
 	while (token)
 	{
-		len_token = _strlen(token);
+		len_token =  _strlen_custom(token);
 		path_abs = malloc(sizeof(char) * (len_token + len_command + 2));
 
 		if (!path_abs)
@@ -35,9 +36,9 @@ int _search_path(char **command, char **env)
 			return (-1);
 		}
 
-		path_abs = _strcpy(path_abs, token);
-		_strcat(path_abs, "/");
-		_strcat(path_abs, *command);
+		path_abs = _strcpy_custom(path_abs, token);
+		_strcat_custom(path_abs, "/");
+		_strcat_custom(path_abs, *command);
 
 		if (stat(path_abs, &stat_info) == 0)
 		{
