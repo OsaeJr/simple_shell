@@ -31,10 +31,10 @@ int main(int argc, char **argv, char **env)
 				continue;
 			}
 
-			if ((!_strcat_custom(command_tokens[0], "exit")) && command_tokens[1] == NULL)
+			if ((!_strcmp_custom(command_tokens[0], "exit")) && command_tokens[1] == NULL)
 				exitCommand(command_tokens, input_command, exit_status);
 
-			if (!_strcat_custom(command_tokens[0], "env"))
+			if (!_strcmp_custom(command_tokens[0], "env"))
 				printEnvironment(env);
 			else
 			{
