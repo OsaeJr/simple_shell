@@ -20,18 +20,18 @@ char **tokenizeInput(char *inputString)
 		if (inputString[tokenIndex] == ' ')
 			spaceCount++;
 	}
-	if ((spaceCount + 1) == _strlen(inputString))
+	if ((spaceCount + 1) == _strlen_custom(inputString))
 		return (NULL);
 
 	commandTokens = malloc(sizeof(char *) * (spaceCount + 2));
 	if (commandTokens == NULL)
 		return (NULL);
 
-	token = _strtok(inputString, " \n\t\r");
+	token = custom_strtok(inputString, " \n\t\r");
 	for (tokenIndex = 0; token != NULL; tokenIndex++)
 	{
 		commandTokens[tokenIndex] = token;
-		token = _strtok(NULL, " \n\t\r");
+		token = custom_strtok(NULL, " \n\t\r");
 	}
 	commandTokens[tokenIndex] = NULL;
 	return (commandTokens);
