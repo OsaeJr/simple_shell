@@ -6,17 +6,17 @@
 
 char *_getline_command(void)
 {
-	char *a = NULL;
-	unsigned int b = 0;
+	char *lineptr = NULL;
+	size_t charter_user = 0;
 
 	if (isatty(STDIN_FILENO))
 		write(STDOUT_FILENO, "$ ", 2);
 
-	if (getline(&a, &b, stdin) == -1)
+	if (getline(&lineptr, &charter_user, stdin) == -1)
 	{
-		free(a);
+		free(lineptr);
 		return (NULL);
 	}
 
-	return (a);
+	return (lineptr);
 }

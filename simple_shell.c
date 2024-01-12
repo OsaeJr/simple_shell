@@ -8,45 +8,42 @@
  */
 int main(int ac, char **av, char **env)
 {
-	char *a = NULL;
-	char **b = NULL;
-	int c = 0;
-	int d = 0;
-	int e = 0;
-	(void)stc;
+	char *getcommand = NULL, **user_command = NULL;
+	int pathValue = 0, _exit = 0, n = 0;
+	(void)ac;
 
 	while (1)
 	{
-		a = _getline_command();
-		if (a)
+		getcommand = _getline_command();
+		if (getcommand)
 		{
-			c++;
-			b = _get_token(a);
-			if (!b)
+			pathValue++;
+			user_command = _get_token(getcommand);
+			if (!user_command)
 			{
-				free(a);
+				free(getcommand);
 				continue;
 			}
-			if ((!_strcmp(b[0], "exit")) && b[1] == NULL)
-				_exit_command(b, a, d);
-			if (!_strcmp(b[0], "env"))
+			if ((!_strcmp(user_command[0], "exit")) && user_command[1] == NULL)
+				_exit_command(user_command, getcommand, _exit);
+			if (!_strcmp(user_command[0], "env"))
 				_getenv(env);
 			else
 			{
-				e = _values_path(&b[0], env);
-				d = _fork_fun(b, av, env, a, c, e);
-				if (e == 0)
-					free(b[0]);
+				n = _values_path(&user_command[0], env);
+				_exit = _fork_fun(user_command, av, env, getcommand, pathValue, n);
+				if (n == 0)
+					free(user_command[0]);
 			}
-			free(b);
+			free(user_command);
 		}
 		else
 		{
 			if (isatty(STDIN_FILENO))
 				write(STDOUT_FILENO, "\n", 1);
-			exit(d);
+			exit(_exit);
 		}
-		free(a);
+		free(getcommand);
 	}
-	return (d);
+	return (_exit);
 }

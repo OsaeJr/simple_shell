@@ -8,7 +8,7 @@
  */
 void _exit_command(char **arg, char *lineptr, int _exit)
 {
-	int index = 0;
+	int exit_status = 0;
 
 	if (!arg[1])
 	{
@@ -16,7 +16,7 @@ void _exit_command(char **arg, char *lineptr, int _exit)
 		free(arg);
 		exit(_exit);
 	}
-	index = atoi(arg[1]);
+	exit_status = atoi(arg[1]);
 
 	free(lineptr);
 	free(arg);
@@ -31,12 +31,12 @@ void _exit_command(char **arg, char *lineptr, int _exit)
 
 void _getenv(char **env)
 {
-	unsigned int a = 0;
+	size_t run = 0;
 
-	while (env[a])
+	while (env[run])
 	{
-		write(STDOUT_FILENO, env[a], _strlen(env[run]));
+		write(STDOUT_FILENO, env[run], _strlen(env[run]));
 		write(STDOUT_FILENO, "\n", 1);
-		a++;
+		run++;
 	}
 }

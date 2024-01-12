@@ -7,30 +7,31 @@
 
 char **_get_token(char *lineptr)
 {
-	char **u_com = NULL, *opt = NULL;
-	unsigned int q = 0;
-	int k = 0;
+	char **user_command = NULL;
+	char *token = NULL;
+	size_t i = 0;
+	int size = 0;
 
 	if (lineptr == NULL)
 		return (NULL);
 
-	for (q = 0; lineptr[q]; q++)
+	for (i = 0; lineptr[i]; i++)
 	{
-		if (lineptr[q] == ' ')
-			k++;
+		if (lineptr[i] == ' ')
+			size++;
 	}
-	if ((k + 1) == _strlen(lineptr))
+	if ((size + 1) == _strlen(lineptr))
 		return (NULL);
-	u_com = malloc(sizeof(char *) * (k + 2));
-	if (u_com == NULL)
+	user_command = malloc(sizeof(char *) * (size + 2));
+	if (user_command == NULL)
 		return (NULL);
 
-	opt = _strtok(lineptr, " \n\t\r");
-	for (q = 0; opt != NULL; q++)
+	token = _strtok(lineptr, " \n\t\r");
+	for (i = 0; token != NULL; i++)
 	{
-		u_com[q] = opt;
-		opt = _strtok(NULL, " \n\t\r");
+		user_command[i] = token;
+		token = _strtok(NULL, " \n\t\r");
 	}
-	u_com[q] = NULL;
-	return (u_com);
+	user_command[i] = NULL;
+	return (user_command);
 }
