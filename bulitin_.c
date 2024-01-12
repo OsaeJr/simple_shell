@@ -37,7 +37,7 @@ void print_env(char **environment)
 
 	while (environment[exec])
 	{
-		write(STDOUT_FILENO, environment[exec], _strlen(environment[exec]));
+		write(STDOUT_FILENO, environment[exec], custom_strlen(environment[exec]));
 		write(STDOUT_FILENO, "\n", 1);
 		exec++;
 	}
