@@ -53,8 +53,7 @@ char *_strcpy(char *destination, char *source)
  * _strcmp - Compare two strings.
  * @str1: First string to be compared.
  * @str2: Second string to be compared.
- * Return: 0 if strings are equal, positive if str1 is greater, negative if str2 is greater.
- *
+ * Return: 0 if str are equal, +tive if str1 is gr8ter, _tive if str2 is g8ter.
  * Description: This function compares the strings str1 and str2.
  */
 int _strcmp(char *str1, char *str2)
@@ -77,7 +76,7 @@ int _strcmp(char *str1, char *str2)
  * @character: Character to be located.
  * Return: Pointer to the first occurrence of the character in the string.
  *
- * Description: This function searches for the first occurrence of the character
+ * Description: This func searches for the first occurrence of the character
  * c (an unsigned char) in the string pointed to by the argument str.
  */
 char *_strchr(char *str, char character)

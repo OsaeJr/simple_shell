@@ -13,12 +13,12 @@ char *find_env_var(char **env_vars, const char *name)
 
 	for (i = 0; env_vars[i]; i++)
 	{
-		name_len = 0;
-		while (env_vars[i][name_len] && env_vars[i][name_len] != '=')
-			name_len++;
+		n_len = 0;
+		while (env_vars[i][n_len] && env_vars[i][n_len] != '=')
+			n_len++;
 
-		if (_strncmp(env_vars[i], name, name_len) == 0 && env_vars[i][name_len] == '=')
-			return (env_vars[i] + name_len + 1);
+		if (_strncmp(env_vars[i], name, n_len) == 0 && env_vars[i][n_len] == '=')
+			return (env_vars[i] + n_len + 1);
 	}
 
 	return (NULL);
@@ -33,14 +33,12 @@ char *find_env_var(char **env_vars, const char *name)
  */
 char *process_env_vars(char **env_vars, char *input)
 {
-	char *result;
-	char *value;
+	char *result, char *value;
 	int i, j, k;
 
 	result = malloc(sizeof(char) * (BUFSIZE));
 	if (!result)
 		return (input);
-
 	for (i = j = 0; input[i]; i++)
 	{
 		if (input[i] == '$' && input[i + 1] == '{')
@@ -71,7 +69,6 @@ char *process_env_vars(char **env_vars, char *input)
 			result[j++] = input[i];
 		}
 	}
-
 	result[j] = '\0';
 	return (result);
 }

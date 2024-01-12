@@ -7,66 +7,65 @@
  */
 char *generateEnvError(data_shell *shellData)
 {
-    int length;
-    char *errorMessage;
-    char *lineCounter;
-    char *message;
+	int length;
+	char *errorMessage;
+	char *l;
+	char *msg;
 
-    lineCounter = aux_itoa(shellData->counter);
-    message = ": Unable to add/remove from environment\n";
-    length = _strlen(shellData->av[0]) + _strlen(lineCounter) + _strlen(shellData->args[0]) + _strlen(message) + 4;
-    errorMessage = malloc(sizeof(char) * (length + 1));
+	l = aux_itoa(d->counter);
+	msg = ": Unable to add/remove from environment\n";
+	len = _strlen(d->av[0]) + _strlen(l) + _strlen(d->args[0]) + _strlen(msg) + 4;
+	errorMessage = malloc(sizeof(char) * (length + 1));
 
-    if (errorMessage == NULL)
-    {
-        free(errorMessage);
-        free(lineCounter);
-        return (NULL);
-    }
+	if (errorMessage == NULL)
+	{
+		free(errorMessage);
+		free(lineCounter);
+		return (NULL);
+	}
 
-    _strcpy(errorMessage, shellData->av[0]);
-    _strcat(errorMessage, ": ");
-    _strcat(errorMessage, lineCounter);
-    _strcat(errorMessage, ": ");
-    _strcat(errorMessage, shellData->args[0]);
-    _strcat(errorMessage, message);
-    _strcat(errorMessage, "\0");
-    free(lineCounter);
+	_strcpy(errorMessage, shellData->av[0]);
+	_strcat(errorMessage, ": ");
+	_strcat(errorMessage, lineCounter);
+	_strcat(errorMessage, ": ");
+	_strcat(errorMessage, shellData->args[0]);
+	_strcat(errorMessage, message);
+	_strcat(errorMessage, "\0");
+	free(lineCounter);
 
-    return (errorMessage);
+	return (errorMessage);
 }
 
 /**
- * generatePermissionDeniedError - Generates error message for path and failure due to denied permission.
- * @shellData: Data relevant (counter, arguments).
+ * generatePermissionDeniedError - g-rate er msg 4 path & falur due 2 deny pmsn
+ * @shell_d: Data relevant (counter, arguments).
  * Return: The error string.
  */
-char *generatePermissionDeniedError(data_shell *shellData)
+char *generatePermissionDeniedError(data_shell *shell_d)
 {
-    int length;
-    char *lineCounter;
-    char *errorMessage;
+	int len;
+	char *lineC;
+	char *errorMessage;
 
-    lineCounter = aux_itoa(shellData->counter);
-    length = _strlen(shellData->av[0]) + _strlen(lineCounter) + _strlen(shellData->args[0]) + 24;
-    errorMessage = malloc(sizeof(char) * (length + 1));
+	l_c = aux_itoa(shell_d->counter);
+	len = _strlen(shell_d->av[0]) + _strlen(l_c) + _strlen(shell_d->args[0]) + 24;
+	errorMessage = malloc(sizeof(char) * (length + 1));
 
-    if (errorMessage == NULL)
-    {
-        free(errorMessage);
-        free(lineCounter);
-        return (NULL);
-    }
+	if (errorMessage == NULL)
+	{
+		free(errorMessage);
+		free(lineCounter);
+		return (NULL);
+	}
 
-    _strcpy(errorMessage, shellData->av[0]);
-    _strcat(errorMessage, ": ");
-    _strcat(errorMessage, lineCounter);
-    _strcat(errorMessage, ": ");
-    _strcat(errorMessage, shellData->args[0]);
-    _strcat(errorMessage, ": Permission denied\n");
-    _strcat(errorMessage, "\0");
-    free(lineCounter);
+	_strcpy(errorMessage, shellData->av[0]);
+	_strcat(errorMessage, ": ");
+	_strcat(errorMessage, lineCounter);
+	_strcat(errorMessage, ": ");
+	_strcat(errorMessage, shellData->args[0]);
+	_strcat(errorMessage, ": Permission denied\n");
+	_strcat(errorMessage, "\0");
+	free(lineCounter);
 
-    return (errorMessage);
+	return (errorMessage);
 }
-

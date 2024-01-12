@@ -1,98 +1,91 @@
 #include "main.h"
 
 /**
- * generateErrorMessage - function that generates the error message
+ * generate_error_message - Generates error message.
  *
- * @shellData: data relevant (directory)
- * @errorType: type of error message
- * Return: error message
+ * @shell_data: Data relevant (directory).
+ * @error_type: Type of error message.
+ * Return: Error message.
  */
-char *generateErrorMessage(data_shell *shellData, int errorType)
+char *generate_error_message(data_shell *shell_data, int error_type)
 {
-	int length, idLength;
-	char *errorMessage, *lineCounter, *message;
+	int length, id_len;
+	char *error_message, *line_counter, *msg;
+	line_counter = aux_itoa(shell_data->counter);
 
-	lineCounter = aux_itoa(shellData->counter);
-
-	switch (errorType)
+	switch (error_type)
 	{
 	case 1:
 		/* cd error message */
-		message = (shellData->args[1][0] == '-') ? ": Illegal option " : ": can't cd to ";
-		idLength = (shellData->args[1][0] == '-') ? 2 : _strlen(shellData->args[1]);
+		msg = (shell_data->args[1][0] == '-') ? ": Illegal opt " : ": can't cd to ";
+		id_len = (shell_data->args[1][0] == '-') ? 2 : _strlen(shell_data->args[1]);
 		break;
 	case 2:
 		/* Command not found error message */
 		message = ": not found\n";
-		idLength = 0;
+		id_length = 0;
 		break;
 	case 3:
 		/* Exit shell error message */
 		message = ": Illegal number: ";
-		idLength = _strlen(shellData->args[1]);
+		id_length = _strlen(shell_data->args[1]);
 		break;
 	default:
-		free(lineCounter);
-		return NULL;
+		free(line_counter);
+		return (NULL);
 	}
+	length = _strlen(shell_data->av[0]) + _strlen(line_counter) + _strlen(shell_data->args[0]) + _strlen(message) + id_length + 5;
+	error_message = malloc(sizeof(char) * (length + 1));
 
-	length = _strlen(shellData->av[0]) + _strlen(lineCounter) + _strlen(shellData->args[0]) + _strlen(message) + idLength + 5;
-	errorMessage = malloc(sizeof(char) * (length + 1));
-
-	if (errorMessage == 0)
+	if (error_message == 0)
 	{
-		free(lineCounter);
-		return NULL;
+		free(line_counter);
+		return (NULL);
 	}
-
-	_strcpy(errorMessage, shellData->av[0]);
-	_strcat(errorMessage, ": ");
-	_strcat(errorMessage, lineCounter);
-	_strcat(errorMessage, ": ");
-	_strcat(errorMessage, shellData->args[0]);
-	_strcat(errorMessage, message);
-
-	if (errorType == 1 && shellData->args[1][0] == '-')
+	_strcpy(error_message, shell_data->av[0]);
+	_strcat(error_message, ": ");
+	_strcat(error_message, line_counter);
+	_strcat(error_message, ": ");
+	_strcat(error_message, shell_data->args[0]);
+	_strcat(error_message, message);
+	if (error_type == 1 && shell_data->args[1][0] == '-')
 	{
-		char illegalFlag[3] = {'-', shellData->args[1][1], '\0'};
-		_strcat(errorMessage, illegalFlag);
+		char illegal_flag[3] = {'-', shell_data->args[1][1], '\0'};
+
+		_strcat(error_message, illegal_flag);
 	}
-
-	_strcat(errorMessage, "\n");
-	_strcat(errorMessage, "\0");
-	free(lineCounter);
-
-	return errorMessage;
+	_strcat(error_message, "\n");
+	_strcat(error_message, "\0");
+	free(line_counter);
+	return (error_message);
 }
 
 /**
- * cdErrorMessage - error message for cd command in get_cd
- * @shellData: data relevant (directory)
- * Return: Error message
+ * cd_error_message - Error message for cd command in get_cd.
+ * @shell_data: Data relevant (directory).
+ * Return: Error message.
  */
-char *cdErrorMessage(data_shell *shellData)
+char *cd_error_message(data_shell *shell_data)
 {
-	return generateErrorMessage(shellData, 1);
+	return (generate_error_message(shell_data, 1));
 }
 
 /**
- * notFoundErrorMessage - generic error message for command not found
- * @shellData: data relevant (counter, arguments)
- * Return: Error message
+ * not_found_error_message - Generic error message for command not found.
+ * @shell_data: Data relevant (counter, arguments).
+ * Return: Error message.
  */
-char *notFoundErrorMessage(data_shell *shellData)
+char *not_found_error_message(data_shell *shell_data)
 {
-	return generateErrorMessage(shellData, 2);
+	return (generate_error_message(shell_data, 2));
 }
 
 /**
- * exitShellErrorMessage - generic error message for exit in get_exit
- * @shellData: data relevant (counter, arguments)
- *
- * Return: Error message
+ * exit_shell_error_message - Generic error message for exit in get_exit.
+ * @shell_data: Data relevant (counter, arguments).
+ * Return: Error message.
  */
-char *exitShellErrorMessage(data_shell *shellData)
+char *exit_shell_error_message(data_shell *shell_data)
 {
-	return generateErrorMessage(shellData, 3);
+	return (generate_error_message(shell_data, 3));
 }
-

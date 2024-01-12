@@ -44,14 +44,14 @@ char *swap_special_chars(char *input, int is_swap)
 }
 
 /**
- * add_separator_and_lines - add separators and command lines in the lists
+ * add_sepa_n_lines - add separators and command lines in the lists
  *
- * @separator_list: head of separator list
+ * @sepa_list: head of separator list
  * @line_list: head of command lines list
  * @input: input string
  * Return: no return
  */
-void add_separator_and_lines(sep_list **separator_list, line_list **line_list, char *input)
+void add_sepa_n_lines(sep_list **sepa_list, line_list **line_list, char *input)
 {
 	int i;
 	char *line;
@@ -80,45 +80,45 @@ void add_separator_and_lines(sep_list **separator_list, line_list **line_list, c
 }
 
 /**
- * move_to_next - go to the next command line stored
+ * mv_to_next - go to the next command line stored
  *
- * @separator_list: separator list
- * @line_list: command line list
+ * @sepa_list: separator list
+ * @l_list: command line list
  * @datash: data structure
  * Return: no return
  */
-void move_to_next(sep_list **separator_list, line_list **line_list, data_shell *datash)
+void mv_to_next(sep_list **sepa_list, line_list **l_list, data_shell *datash)
 {
 	int loop_separator;
-	sep_list *current_separator;
-	line_list *current_line;
+	sep_list *c_separator;
+	line_list *c_line;
 
 	loop_separator = 1;
-	current_separator = *separator_list;
-	current_line = *line_list;
+	c_separator = *separator_list;
+	current_l = *line_list;
 
-	while (current_separator != NULL && loop_separator)
+	while (c_separator != NULL && loop_separator)
 	{
 		if (datash->status == 0)
 		{
-			if (current_separator->separator == '&' || current_separator->separator == ';')
+			if (c_separator->separator == '&' || current_separator->separator == ';')
 				loop_separator = 0;
-			if (current_separator->separator == '|')
-				current_line = current_line->next, current_separator = current_separator->next;
+			if (c_separator->separator == '|')
+				c_line = c_line->next, c_separator = c_separator->next;
 		}
 		else
 		{
-			if (current_separator->separator == '|' || current_separator->separator == ';')
+			if (c_separator->separator == '|' || c_separator->separator == ';')
 				loop_separator = 0;
-			if (current_separator->separator == '&')
-				current_line = current_line->next, current_separator = current_separator->next;
+			if (c_separator->separator == '&')
+				c_line = current_line->next, c_separator = c_separator->next;
 		}
-		if (current_separator != NULL && !loop_separator)
-			current_separator = current_separator->next;
+		if (c_separator != NULL && !loop_separator)
+			c_separator = c_separator->next;
 	}
 
-	*separator_list = current_separator;
-	*line_list = current_line;
+	*separator_list = c_separator;
+	*line_list = c_line;
 }
 
 /**

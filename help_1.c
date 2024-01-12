@@ -6,7 +6,9 @@
  */
 void display_help_env(void)
 {
-	char *help_message = "env: env [option] [name=value] [command [args]]\n\t";
+	char *help_message;
+
+	help_message = "env: env [option] [name=value] [command [args]]\n\t";
 	write(STDOUT_FILENO, help_message, _strlen(help_message));
 
 	help_message = "Print the environment of the shell.\n";
@@ -19,11 +21,12 @@ void display_help_env(void)
  */
 void display_help_setenv(void)
 {
-	char *help_message = "setenv: setenv (const char *name, const char *value, int replace)\n\t";
-	write(STDOUT_FILENO, help_message, _strlen(help_message));
+	char *msg = "setenv:setenv(constchar *name,constchar *value,intreplace)\n\t";
 
-	help_message = "Add a new definition to the environment\n";
-	write(STDOUT_FILENO, help_message, _strlen(help_message));
+	write(STDOUT_FILENO, msg, _strlen(msg));
+
+	msg = "Add a new definition to the environment\n";
+	write(STDOUT_FILENO, msg, _strlen(msg));
 }
 
 /**
@@ -33,6 +36,7 @@ void display_help_setenv(void)
 void display_help_unsetenv(void)
 {
 	char *help_message = "unsetenv: unsetenv (const char *name)\n\t";
+
 	write(STDOUT_FILENO, help_message, _strlen(help_message));
 
 	help_message = "Remove an entry completely from the environment\n";
@@ -46,18 +50,19 @@ void display_help_unsetenv(void)
 void display_help_general(void)
 {
 	char *help_message = "^-^ bash, version 1.0(1)-release\n";
+
 	write(STDOUT_FILENO, help_message, _strlen(help_message));
 
-	help_message = "These commands are defined internally. Type 'help' to see the list";
+	help_message = "Thesecommands aredefined internally.Type'help'tosee thelist";
 	write(STDOUT_FILENO, help_message, _strlen(help_message));
 
-	help_message = "Type 'help name' to find out more about the function 'name'.\n\n ";
+	help_message = "Type'help name'to findout moreabout the function'name'.\n\n ";
 	write(STDOUT_FILENO, help_message, _strlen(help_message));
 
-	help_message = " alias: alias [name=['string']]\n cd: cd [-L|[-P [-e]] [-@]] ";
+	help_message = " alias:alias [name=['string']]\n cd: cd [-L|[-P [-e]] [-@]] ";
 	write(STDOUT_FILENO, help_message, _strlen(help_message));
 
-	help_message = "[dir]\nexit: exit [n]\n  env: env [option] [name=value] [command ";
+	help_message = "[dir]\nexit: exit [n]\n  env:env[option][name=value][command";
 	write(STDOUT_FILENO, help_message, _strlen(help_message));
 
 	help_message = "[args]]\n  setenv: setenv [variable] [value]\n  unsetenv: ";
@@ -74,12 +79,12 @@ void display_help_general(void)
 void display_help_exit(void)
 {
 	char *help_message = "exit: exit [n]\n Exit shell.\n";
+
 	write(STDOUT_FILENO, help_message, _strlen(help_message));
 
-	help_message = "Exits the shell with a status of N. If N is omitted, the exit";
+	help_message = "Exit the shell with a status of N. If N is omitted, the exit";
 	write(STDOUT_FILENO, help_message, _strlen(help_message));
 
 	help_message = "status is that of the last command executed\n";
 	write(STDOUT_FILENO, help_message, _strlen(help_message));
 }
-

@@ -70,17 +70,17 @@ int find_syntax_error(char *input, int index, char last_char)
  * find_first_char - finds index of the first character.
  *
  * @input: input string.
- * @index: index.
+ * @i: index.
  * Return: 1 if there is an error. 0 in other case.
  */
-int find_first_char(char *input, int *index)
+int find_first_char(char *input, int *i)
 {
-	for (*index = 0; input[*index]; *index += 1)
+	for (*i = 0; input[*i]; *i += 1)
 	{
-		if (input[*index] == ' ' || input[*index] == '\t')
+		if (input[*i] == ' ' || input[*i] == '\t')
 			continue;
 
-		if (input[*index] == ';' || input[*index] == '|' || input[*index] == '&')
+		if (input[*i] == ';' || input[*i] == '|' || input[*i] == '&')
 			return (-1);
 
 		break;
@@ -94,28 +94,28 @@ int find_first_char(char *input, int *index)
  *
  * @datash: data structure.
  * @input: input string.
- * @index: index of the error.
- * @is_repetition: to control error message.
+ * @i: index of the error.
+ * @is_repet: to control error message.
  * Return: no return.
  */
-void display_syntax_error(data_shell *datash, char *input, int index, int is_repetition)
+void display_syntax_error(data_shell *datash, char *input, int i, int is_repet)
 {
 	char *msg, *msg2, *msg3, *error, *counter;
 	int length;
 
-	if (input[index] == ';')
+	if (input[i] == ';')
 	{
-		if (is_repetition == 0)
-			msg = (input[index + 1] == ';' ? ";;" : ";");
+		if (is_repet == 0)
+			msg = (input[i + 1] == ';' ? ";;" : ";");
 		else
-			msg = (input[index - 1] == ';' ? ";;" : ";");
+			msg = (input[i - 1] == ';' ? ";;" : ";");
 	}
 
-	if (input[index] == '|')
-		msg = (input[index + 1] == '|' ? "||" : "|");
+	if (input[i] == '|')
+		msg = (input[i + 1] == '|' ? "||" : "|");
 
-	if (input[index] == '&')
-		msg = (input[index + 1] == '&' ? "&&" : "&");
+	if (input[i] == '&')
+		msg = (input[i + 1] == '&' ? "&&" : "&");
 
 	msg2 = ": Syntax error: \"";
 	msg3 = "\" unexpected\n";
@@ -143,7 +143,7 @@ void display_syntax_error(data_shell *datash, char *input, int index, int is_rep
 }
 
 /**
- * check_syntax_errors - intermediate function to find and print a syntax error.
+ * check_syntax_errors - intermediate func to find and print a syntax error.
  *
  * @datash: data structure.
  * @input: input string.

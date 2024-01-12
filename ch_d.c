@@ -21,25 +21,20 @@ void changeToParentDirectory(data_shell *datash)
 		free(copyPwd);
 		return;
 	}
-
 	if (_strcmp("/", copyPwd) == 0)
 	{
 		free(copyPwd);
 		return;
 	}
-
 	copyStrtokPwd = copyPwd;
 	rev_string(copyStrtokPwd);
 	copyStrtokPwd = _strtok(copyStrtokPwd, "/");
-
 	if (copyStrtokPwd != NULL)
 	{
 		copyStrtokPwd = _strtok(NULL, "\0");
-
 		if (copyStrtokPwd != NULL)
 			rev_string(copyStrtokPwd);
 	}
-
 	if (copyStrtokPwd != NULL)
 	{
 		chdir(copyStrtokPwd);
@@ -50,7 +45,6 @@ void changeToParentDirectory(data_shell *datash)
 		chdir("/");
 		set_env("PWD", "/", datash);
 	}
-
 	datash->status = 0;
 	free(copyPwd);
 }

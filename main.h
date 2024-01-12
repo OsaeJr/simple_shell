@@ -18,6 +18,16 @@
 
 extern char **environ;
 
+/**
+ * struct data - struct that contains all relevant data on runtime
+ * @av: argument vector
+ * @input: command line written by the user
+ * @args: tokens of the command line
+ * @status: last status of the shell
+ * @counter: lines counter
+ * @_environ: environment variable
+ * @pid: process ID of the shell
+ */
 typedef struct data
 {
 	char **av;
@@ -29,6 +39,12 @@ typedef struct data
 	char *pid;
 } data_shell;
 
+/**
+ * struct sep_list_s - single linked list
+ * @separator: ; | &
+ * @next: next node
+ * Description: single linked list to store separators
+ */
 typedef struct sep_list_s
 {
 	char separator;
@@ -36,13 +52,26 @@ typedef struct sep_list_s
 } sep_list;
 
 
+/**
+ * struct line_list_s - single linked list
+ * @line: command line
+ * @next: next node
+ * Description: single linked list to store command lines
+ */
 typedef struct line_list_s
 {
 	char *line;
 	struct line_list_s *next;
 } line_list;
 
-
+/**
+ * struct r_var_list - single linked list
+ * @len_var: length of the variable
+ * @val: value of the variable
+ * @len_val: length of the value
+ * @next: next node
+ * Description: single linked list to store variables
+ */
 typedef struct r_var_list
 {
 	int len_var;
@@ -51,6 +80,11 @@ typedef struct r_var_list
 	struct r_var_list *next;
 } r_var;
 
+/**
+ * struct builtin_s - Builtin struct for command args.
+ * @name: The name of the command builtin i.e cd, exit, env
+ * @f: data type pointer function.
+ */
 typedef struct builtin_s
 {
 	char *name;
@@ -69,7 +103,7 @@ int change_current_directory(data_shell *datash);
 int count_repeated_chars(char *input, int index);
 int find_syntax_error(char *input, int index, char last_char);
 int find_first_char(char *input, int *index);
-void display_syntax_error(data_shell *datash, char *input, int index, int is_repetition);
+void display_syntax_error(data_shell *datash, char *i, int idx, int is_repet);
 int check_syntax_errors(data_shell *datash, char *input);
 int compareEnvName(const char *envVar, const char *name);
 char *getEnvironmentVariable(const char *name, char **environment);
@@ -91,7 +125,7 @@ int checkExecutePermissions(char *directory, data_shell *dataShell);
 int executeCommand(data_shell *dataShell);
 int report_error(data_shell *shell_data, int error_code);
 int display_help(data_shell *shell_data);
-void set_input_buffer(char **line_buffer, size_t *buffer_size, char *buffer, size_t input_size);
+void set_input_buffer(char **l_buff, size_t *b_size, char *buf, size_t i_size);
 ssize_t get_input(char **line_buffer, size_t *buffer_size, FILE *stream);
 void handle_sigint(int signal);
 void display_help_env(void);
@@ -107,11 +141,11 @@ sep_list *add_separator_node_end(sep_list **separator_list, char separator);
 void free_separator_list(sep_list **separator_list);
 line_list *add_line_node_end(line_list **line_list, char *line);
 void free_line_list(line_list **line_list);
-r_var *add_rvar_node(r_var **rvar_list, int length_var, char *value, int length_value);
+r_var *add_rvar_node(r_var **rvar_list, int l_var, char *value, int l_value);
 void free_rvar_list(r_var **rvar_list);
 void _memcpy(void *dest, const void *src, unsigned int size);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-char **_realloc_double_pointer(char **ptr, unsigned int old_size, unsigned int new_size);
+char **_realloc_double_pointer(char **ptr, size_t old_size, size_t new_size);
 int shell_exit(data_shell *shell_data);
 int get_number_length(int num);
 char *int_to_string(int num);
@@ -131,8 +165,8 @@ char *remove_comments(char *input);
 void run_shell_loop(data_shell *datash);
 char *get_input(int *is_end_of_file);
 char *swap_special_chars(char *input, int is_swap);
-void add_separator_and_lines(sep_list **separator_list, line_list **line_list, char *input);
-void move_to_next(sep_list **separator_list, line_list **line_list, data_shell *datash);
+void add_sepa_n_line(sep_list **sepa_list, line_list **line_list, char *input);
+void mv_to_next(sep_list **sepa_list, line_list **l_list, data_shell *datash);
 int execute_commands(data_shell *datash, char *input);
 char **split_line(char *input);
 char *find_env_var(char **env_vars, const char *name);

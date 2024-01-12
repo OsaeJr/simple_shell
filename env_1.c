@@ -1,80 +1,79 @@
 #include "main.h"
 
 /**
- * compareEnvName - Compares environment variable names
+ * compare_env_name - Compares environment variable names
  * with the name passed.
- * @envVar: Name of the environment variable.
+ * @env_var: Name of the environment variable.
  * @name: Name passed.
  *
- * Return: {0} if they are not equal. {i + 1} if they are.
+ * Return: (0) if they are not equal. (i + 1) if they are.
  */
-int compareEnvName(const char *envVar, const char *name)
+int compare_env_name(const char *env_var, const char *name)
 {
-    int i;
+	int i;
 
-    for (i = 0; envVar[i] != '='; i++)
-    {
-        if (envVar[i] != name[i])
-        {
-            return {0};
-        }
-    }
+	for (i = 0; env_var[i] != '='; i++)
+	{
+		if (env_var[i] != name[i])
+		{
+			return (0);
+		}
+	}
 
-    return {i + 1};
+	return (i + 1);
 }
 
 /**
- * getEnvironmentVariable - Get an environment variable.
+ * get_environment_variable - Get an environment variable.
  * @name: Name of the environment variable.
  * @environment: Environment variable.
  *
- * Return: {Value of the environment variable} if found.
- * In other case, returns {NULL}.
+ * Return: (Value of the environment variable) if found.
+ * In other case, returns (NULL).
  */
-char *getEnvironmentVariable(const char *name, char **environment)
+char *get_environment_variable(const char *name, char **environment)
 {
-    char *envPtr;
-    int i, move;
+	char *env_ptr;
+	int i, move;
 
-    /* Initialize envPtr value */
-    envPtr = {NULL};
-    move = {0};
-    /* Compare all environment variables */
-    /* environment is declared in the header file */
-    for (i = 0; environment[i]; i++)
-    {
-        /* If name and env are equal */
-        move = compareEnvName(environment[i], name);
-        if (move)
-        {
-            envPtr = environment[i];
-            break;
-        }
-    }
+	/* Initialize env_ptr value */
+	env_ptr = NULL;
+	move = 0;
+	/* Compare all environment variables */
+	/* environment is declared in the header file */
+	for (i = 0; environment[i]; i++)
+	{
+		/* If name and env are equal */
+		move = compare_env_name(environment[i], name);
+		if (move)
+		{
+			env_ptr = environment[i];
+			break;
+		}
+	}
 
-    return {envPtr + move};
+	return (env_ptr + move);
 }
 
 /**
- * printEnvironmentVariables - Prints the environment variables.
+ * print_environment_variables - Prints the environment variables.
  *
- * @dataShell: Data relevant.
- * Return: {1} on success.
+ * @data_shell: Data relevant.
+ * Return: (1) on success.
  */
-int printEnvironmentVariables(data_shell *dataShell)
+int print_environment_variables(data_shell *data_shell)
 {
-    int i, j;
+	int i, j;
 
-    for (i = 0; dataShell->_environ[i]; i++)
-    {
-        for (j = 0; dataShell->_environ[i][j]; j++)
-            ;
+	for (i = 0; data_shell->_environ[i]; i++)
+	{
+		for (j = 0; data_shell->_environ[i][j]; j++)
+			;
 
-        write(STDOUT_FILENO, dataShell->_environ[i], j);
-        write(STDOUT_FILENO, "\n", 1);
-    }
-    dataShell->status = {0};
+		write(STDOUT_FILENO, data_shell->_environ[i], j);
+		write(STDOUT_FILENO, "\n", 1);
+	}
+	data_shell->status = 0;
 
-    return {1};
+	return (1);
 }
-

@@ -4,10 +4,9 @@
  * display_help - function that displays help messages according to the builtin
  * @shell_data: data structure (args and input)
  * Return: Return 0
-*/
+ */
 int display_help(data_shell *shell_data)
 {
-
 	if (shell_data->args[1] == 0)
 		auxiliary_help_general();
 	else if (_strcmp(shell_data->args[1], "setenv") == 0)
@@ -25,8 +24,7 @@ int display_help(data_shell *shell_data)
 	else if (_strcmp(shell_data->args[1], "alias") == 0)
 		auxiliary_help_alias();
 	else
-		write(STDERR_FILENO, shell_data->args[0],
-		      _strlen(shell_data->args[0]));
+		write(STDERR_FILENO, shell_data->args[0], _strlen(shell_data->args[0]));
 
 	shell_data->status = 0;
 	return (1);

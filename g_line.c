@@ -2,33 +2,33 @@
 
 /**
  * set_input_buffer - assigns the input buffer for get_input
- * @line_buffer: Buffer that stores the input string
- * @buffer: String that is assigned to line_buffer
- * @buffer_size: Size of line_buffer
- * @input_size: Size of buffer
+ * @l_buff: Buffer that stores the input string
+ * @buff: String that is assigned to line_buffer
+ * @b_size: Size of line_buffer
+ * @i_size: Size of buffer
  */
-void set_input_buffer(char **line_buffer, size_t *buffer_size, char *buffer, size_t input_size)
+void set_input_buffer(char **l_buff, size_t *b_size, char *buff, size_t i_size)
 {
-	if (*line_buffer == NULL)
+	if (*l_buff == NULL)
 	{
-		if (input_size > INPUT_BUFFER_SIZE)
-			*buffer_size = input_size;
+		if (i_size > INPUT_BUFFER_SIZE)
+			*b_size = i_size;
 		else
-			*buffer_size = INPUT_BUFFER_SIZE;
-		*line_buffer = buffer;
+			*b_size = INPUT_BUFFER_SIZE;
+		*l_buff = buff;
 	}
-	else if (*buffer_size < input_size)
+	else if (*b_size < i_size)
 	{
-		if (input_size > INPUT_BUFFER_SIZE)
-			*buffer_size = input_size;
+		if (i_size > INPUT_BUFFER_SIZE)
+			*b_size = input_size;
 		else
-			*buffer_size = INPUT_BUFFER_SIZE;
-		*line_buffer = buffer;
+			*b_size = INPUT_BUFFER_SIZE;
+		*l_buff = buff;
 	}
 	else
 	{
-		_strcpy(*line_buffer, buffer);
-		free(buffer);
+		_strcpy(*l_buff, buff);
+		free(buff);
 	}
 }
 

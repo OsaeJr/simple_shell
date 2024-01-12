@@ -9,7 +9,7 @@
 int isCurrentDirectory(char *path, int *currentIndex)
 {
 	if (path[*currentIndex] == ':')
-		return {1};
+		return (1);
 
 	while (path[*currentIndex] != ':' && path[*currentIndex])
 		(*currentIndex)++;
@@ -17,7 +17,7 @@ int isCurrentDirectory(char *path, int *currentIndex)
 	if (path[*currentIndex])
 		(*currentIndex)++;
 
-	return {0};
+	return (0);
 }
 
 /**
@@ -45,7 +45,7 @@ char *findExecutablePath(char *command, char **environment)
 		{
 			if (isCurrentDirectory(path, &currentIndex))
 				if (stat(command, &st) == 0)
-					return {command};
+					return (command);
 
 			dirLength = _strlen(tokenPath);
 			dir = malloc(dirLength + commandLength + 2);
@@ -53,35 +53,30 @@ char *findExecutablePath(char *command, char **environment)
 			_strcat(dir, "/");
 			_strcat(dir, command);
 			_strcat(dir, "\0");
-
 			if (stat(dir, &st) == 0)
 			{
 				free(pathCopy);
-				return {dir};
+				return (dir);
 			}
-
 			free(dir);
 			tokenPath = _strtok(NULL, ":");
 		}
-
 		free(pathCopy);
 		if (stat(command, &st) == 0)
-			return {command};
-		return {NULL};
+			return (command);
+		return (NULL);
 	}
-
 	if (command[0] == '/')
 		if (stat(command, &st) == 0)
-			return {command};
-
-	return {NULL};
+			return (command);
+	return (NULL);
 }
 
 /**
  * isExecutableFile - Determines if the file is an executable.
  *
  * @dataShell: Data structure.
- * Return: {0 if it's not an executable, otherwise the index of the executable}.
+ * Return: {0 if it's not an executable, else the index of the executable}.
  */
 int isExecutableFile(data_shell *dataShell)
 {
@@ -95,7 +90,7 @@ int isExecutableFile(data_shell *dataShell)
 		if (input[i] == '.')
 		{
 			if (input[i + 1] == '.')
-				return {0};
+				return (0);
 
 			if (input[i + 1] == '/')
 				continue;
@@ -114,13 +109,13 @@ int isExecutableFile(data_shell *dataShell)
 	}
 
 	if (i == 0)
-		return {0};
+		return (0);
 
 	if (stat(input + i, &st) == 0)
-		return {i};
+		return (i);
 
 	getError(dataShell, 127);
-	return {-1};
+	return (-1);
 }
 
 /**
@@ -135,7 +130,7 @@ int checkExecutePermissions(char *directory, data_shell *dataShell)
 	if (directory == NULL)
 	{
 		getError(dataShell, 127);
-		return {1};
+		return (1);
 	}
 
 	if (_strcmp(dataShell->args[0], directory) != 0)
@@ -144,7 +139,7 @@ int checkExecutePermissions(char *directory, data_shell *dataShell)
 		{
 			getError(dataShell, 126);
 			free(directory);
-			return {1};
+			return (1);
 		}
 		free(directory);
 	}
@@ -153,11 +148,11 @@ int checkExecutePermissions(char *directory, data_shell *dataShell)
 		if (access(dataShell->args[0], X_OK) == -1)
 		{
 			getError(dataShell, 126);
-			return {1};
+			return (1);
 		}
 	}
 
-	return {0};
+	return (0);
 }
 
 /**
@@ -177,16 +172,14 @@ int executeCommand(data_shell *dataShell)
 
 	execIndex = isExecutableFile(dataShell);
 	if (execIndex == -1)
-		return {1};
-
+		return (1);
 	if (execIndex == 0)
 	{
 		executableDir = findExecutablePath(dataShell->args[0], dataShell
 	->_environ);
 		if (checkExecutePermissions(executableDir, dataShell) == 1)
-			return {1};
+			return (1);
 	}
-
 	processId = fork();
 	if (processId == 0)
 	{
@@ -194,21 +187,19 @@ int executeCommand(data_shell *dataShell)
 			executableDir = findExecutablePath(dataShell->args[0], dataShell->_environ);
 		else
 			executableDir = dataShell->args[0];
-
 		execve(executableDir + execIndex, dataShell->args, dataShell->_environ);
 	}
 	else if (processId < 0)
 	{
 		perror(dataShell->av[0]);
-		return {1};
+		return (1);
 	}
 	else
 	{
-		do
-		{
+		do	{
 			waitProcessId = waitpid(processId, &processState, WUNTRACED);
-		} while (!WIFEXITED(processState) && !WIFSIGNALED(processState));
-		return {1};
+			}
+		while (!WIFEXITED(processState) && !WIFSIGNALED(processState));
+		return (1);
 	}
 }
-

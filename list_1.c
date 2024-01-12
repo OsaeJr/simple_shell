@@ -9,28 +9,28 @@
  */
 sep_list *add_separator_node_end(sep_list **separator_list, char separator)
 {
-    sep_list *new_separator, *temp;
+	sep_list *new_separator, *temp;
 
-    new_separator = malloc(sizeof(sep_list));
-    if (new_separator == NULL)
-        return (NULL);
+	new_separator = malloc(sizeof(sep_list));
+	if (new_separator == NULL)
+		return (NULL);
 
-    new_separator->separator = separator;
-    new_separator->next = NULL;
-    temp = *separator_list;
+	new_separator->separator = separator;
+	new_separator->next = NULL;
+	temp = *separator_list;
 
-    if (temp == NULL)
-    {
-        *separator_list = new_separator;
-    }
-    else
-    {
-        while (temp->next != NULL)
-            temp = temp->next;
-        temp->next = new_separator;
-    }
+	if (temp == NULL)
+	{
+		*separator_list = new_separator;
+	}
+	else
+	{
+		while (temp->next != NULL)
+			temp = temp->next;
+		temp->next = new_separator;
+	}
 
-    return (*separator_list);
+	return (*separator_list);
 }
 
 /**
@@ -40,19 +40,19 @@ sep_list *add_separator_node_end(sep_list **separator_list, char separator)
  */
 void free_separator_list(sep_list **separator_list)
 {
-    sep_list *temp;
-    sep_list *current;
+	sep_list *temp;
+	sep_list *current;
 
-    if (separator_list != NULL)
-    {
-        current = *separator_list;
-        while ((temp = current) != NULL)
-        {
-            current = current->next;
-            free(temp);
-        }
-        *separator_list = NULL;
-    }
+	if (separator_list != NULL)
+	{
+		current = *separator_list;
+		while ((temp = current) != NULL)
+		{
+			current = current->next;
+			free(temp);
+		}
+		*separator_list = NULL;
+	}
 }
 
 /**
@@ -64,28 +64,28 @@ void free_separator_list(sep_list **separator_list)
  */
 line_list *add_line_node_end(line_list **line_list, char *line)
 {
-    line_list *new_line, *temp;
+	line_list *new_line, *temp;
 
-    new_line = malloc(sizeof(line_list));
-    if (new_line == NULL)
-        return (NULL);
+	new_line = malloc(sizeof(line_list));
+	if (new_line == NULL)
+		return (NULL);
 
-    new_line->line = line;
-    new_line->next = NULL;
-    temp = *line_list;
+	new_line->line = line;
+	new_line->next = NULL;
+	temp = *line_list;
 
-    if (temp == NULL)
-    {
-        *line_list = new_line;
-    }
-    else
-    {
-        while (temp->next != NULL)
-            temp = temp->next;
-        temp->next = new_line;
-    }
+	if (temp == NULL)
+	{
+		*line_list = new_line;
+	}
+	else
+	{
+		while (temp->next != NULL)
+			temp = temp->next;
+		temp->next = new_line;
+	}
 
-    return (*line_list);
+	return (*line_list);
 }
 
 /**
@@ -95,18 +95,17 @@ line_list *add_line_node_end(line_list **line_list, char *line)
  */
 void free_line_list(line_list **line_list)
 {
-    line_list *temp;
-    line_list *current;
+	line_list *temp;
+	line_list *current;
 
-    if (line_list != NULL)
-    {
-        current = *line_list;
-        while ((temp = current) != NULL)
-        {
-            current = current->next;
-            free(temp);
-        }
-        *line_list = NULL;
-    }
+	if (line_list != NULL)
+	{
+		current = *line_list;
+		while ((temp = current) != NULL)
+		{
+			current = current->next;
+			free(temp);
+		}
+		*line_list = NULL;
+	}
 }
-
