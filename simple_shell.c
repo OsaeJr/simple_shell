@@ -9,8 +9,8 @@
  */
 int main(int argc, char **argv, char **envp)
 {
-	char *input_command = NULL, **command_tokens = NULL;
-	int path_status = 0, exit_code = 0, iteration = 0;
+	char *input_command = NULL, **c_tokens = NULL;
+	int path_status = 0, exit_code = 0, i = 0;
 	(void)argc;
 
 	while (1)
@@ -18,25 +18,25 @@ int main(int argc, char **argv, char **envp)
 		input_command = read_command();
 		if (input_command)
 		{
-			iteration++;
-			command_tokens = extract_tokens(input_command);
-			if (!command_tokens)
+			i++;
+			c_tokens = extract_tokens(input_command);
+			if (!c_tokens)
 			{
 				free(input_command);
 				continue;
 			}
-			if ((!custom_strcmp(command_tokens[0], "exit")) && command_tokens[1] == NULL)
-				exit_command(command_tokens, input_command, exit_code);
-			if (!custom_strcmp(command_tokens[0], "env"))
+			if ((!custom_strcmp(c_tokens[0], "exit")) && c_tokens[1] == NULL)
+				exit_command(c_tokens, input_command, exit_code);
+			if (!custom_strcmp(c_tokens[0], "env"))
 				print_env(envp);
 			else
 			{
 				path_status = _parse_path(&command_tokens[0], envp);
-				exit_code = fork_proc(command_tokens, argv, envp, input_command, iteration, path_status);
+				exit_code = fork_proc(c_tokens, argv, envp, input_command, i, path_status);
 				if (path_status == 0)
-					free(command_tokens[0]);
+					free(c_tokens[0]);
 			}
-			free(command_tokens);
+			free(c_tokens);
 		}
 		else
 		{

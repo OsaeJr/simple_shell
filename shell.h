@@ -26,7 +26,6 @@ char *read_command(void);
 void print_env(char **environment);
 char **extract_tokens(char *line);
 void exit_command(char **args, char *lin_ptr, int exit_code);
-int fork_proc(char **args, char **sh, char **env, char *lin_ptr, int id, int a);
+int fork_proc(char **arg, char **sh, char **env, char *lin_ptr, int id, int a);
 char *_custom_strtok(char *input, const char *delimiters);
-int main(int argc, char **argv, char **envp)
-#endif 
+#endif
