@@ -32,7 +32,7 @@ int main(int argc, char **argv, char **envp)
 			else
 			{
 				path_status = _parse_path(&command_tokens[0], envp);
-				exit_code = _execute_command(command_tokens, argv, envp, input_command, iteration, path_status);
+				exit_code = fork_proc(command_tokens, argv, envp, input_command, iteration, path_status);
 				if (path_status == 0)
 					free(command_tokens[0]);
 			}
