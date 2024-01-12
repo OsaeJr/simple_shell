@@ -1,41 +1,43 @@
 #include "shell.h"
-/**
- * _fork_fun - function that create a fork
- *@arg: command and values path
- *@av: Has the name of our program
- *@env: environment
- *@lineptr: command line for the user
- *@np: id of proces
- *@c: Checker add new test
- *Return: 0 success
- */
 
-int _fork_fun(char **arg, char **av, char **env, char *lineptr, int np, int c)
+/**
+ * fork_proc - Creates a fork to execute a command
+ *
+ * @args: Command and arguments
+ * @sh: Name of the shell program
+ * @env: Environment variables
+ * @lin_ptr: User command line
+ * @id: Process ID
+ * @a: Checker for a new test
+ * Return: 0 on success
+ */
+int fork_proc(char **args, char **sh, char **env, char *lin_ptr, int id, int a)
 {
 	pid_t child;
-	int status;
-	char *format = "%s: %d: %s: not found\n";
+	int stat;
+	char *fmt = "%s: %d: %s: not found\n";
 
 	child = fork();
 
 	if (child == 0)
 	{
-		if (execve(arg[0], arg, env) == -1)
+		if (execve(args[0], args, env) == -1)
 		{
-			fprintf(stderr, format, av[0], np, arg[0]);
-			if (!c)
-				free(arg[0]);
-			free(arg);
-			free(lineptr);
+			fprintf(stderr, fmt, she[0], id, args[0]);
+			if (!a)
+				free(args[0]);
+			free(args);
+			free(lin_ptr);
 			exit(errno);
 		}
 	}
 	else
 	{
-		wait(&status);
+		wait(&stat);
 
-		if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-			return (WEXITSTATUS(status));
+		if (WIFEXITED(stat) && WEXITSTATUS(stat) != 0)
+			return (WEXITSTATUS(stat));
 	}
+
 	return (0);
 }

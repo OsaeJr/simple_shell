@@ -1,42 +1,44 @@
 #include "shell.h"
+
 /**
- * _exit_command - this function closes the simple_shell when
- * @arg: pointer with the direction argument.
- * @lineptr: standar input string
- * @_exit: value of exit
+ * exit_command - Closes the simple_shell when exit is called
+ *
+ * @args: Pointer to the arguments
+ * @lin_ptr: Standard input string
+ * @exit_code: Exit code
  * Return: None
  */
-void _exit_command(char **arg, char *lineptr, int _exit)
+void exit_command(char **args, char *lin_ptr, int exit_code)
 {
-	int exit_status = 0;
+	int index = 0;
 
-	if (!arg[1])
+	if (!args[1])
 	{
-		free(lineptr);
-		free(arg);
-		exit(_exit);
+		free(lin_ptr);
+		free(args);
+		exit(exit_code);
 	}
-	exit_status = atoi(arg[1]);
+	index = atoi(args[1]);
 
-	free(lineptr);
-	free(arg);
-	exit(exit_status);
+	free(lin_ptr);
+	free(args);
+	exit(index);
 }
 
 /**
- *_getenv - function to get all env
- *@env: enviroment
- *Return: 0
+ * print_env - Prints all environment variables
+ *
+ * @environment: Environment variables
+ * Return: None
  */
-
-void _getenv(char **env)
+void print_env(char **environment)
 {
-	size_t run = 0;
+	unsigned int exec = 0;
 
-	while (env[run])
+	while (environment[exec])
 	{
-		write(STDOUT_FILENO, env[run], _strlen(env[run]));
+		write(STDOUT_FILENO, environment[exec], _strlen(environment[exec]));
 		write(STDOUT_FILENO, "\n", 1);
-		run++;
+		exec++;
 	}
 }

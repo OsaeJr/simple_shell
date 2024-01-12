@@ -1,45 +1,54 @@
 #include "shell.h"
-/**
- * _values_path - separate the path in new strings.
- * @arg: command input of user.
- * @env: enviroment.
- * Return:  a pointer to strings.
- */
-int _values_path(char **arg, char **env)
-{
-	char *token = NULL, *path_rela = NULL, *path_absol = NULL;
-	size_t value_path, command;
-	struct stat stat_lineptr;
 
-	if (stat(*arg, &stat_lineptr) == 0)
+/**
+ * _parse_path - Separates the PATH into new strings.
+ * @command: Command input of the user.
+ * @env: Environment.
+ * Return: A pointer to strings.
+ */
+int _parse_path(char **command, char **env)
+{
+	char *token = NULL, *path_relative = NULL, *path_absolute = NULL;
+	size_t path_length, command_length;
+	struct stat stat_buffer;
+
+	if (stat(*command, &stat_buffer) == 0)
 		return (-1);
-	path_rela = _get_path(env);
-	if (!path_rela)
+
+	path_relative = _get_path(env);
+	if (!path_relative)
 		return (-1);
-	token = _strtok(path_rela, ":");
-	command = _strlen(*arg);
+
+	token = _custom_strtok(path_relative, ":");
+	command_length = _custom_strlen(*command);
+
 	while (token)
 	{
-		value_path = _strlen(token);
-		path_absol = malloc(sizeof(char) * (value_path + command + 2));
-		if (!path_absol)
+		path_length = _custom_strlen(token);
+		path_absolute = malloc(sizeof(char) * (path_length + command_length + 2));
+
+		if (!path_absolute)
 		{
-			free(path_rela);
+			free(path_relative);
 			return (-1);
 		}
-		path_absol = _strcpy(path_absol, token);
-		_strcat(path_absol, "/");
-		_strcat(path_absol, *arg);
 
-		if (stat(path_absol, &stat_lineptr) == 0)
+		path_absolute = _custom_strcpy(path_absolute, token);
+		_custom_strcat(path_absolute, "/");
+		_custom_strcat(path_absolute, *command);
+
+		if (stat(path_absolute, &stat_buffer) == 0)
 		{
-			*arg = path_absol;
-			free(path_rela);
+			*command = path_absolute;
+			free(path_relative);
 			return (0);
 		}
-		free(path_absol);
-		token = _strtok(NULL, ":");
+
+		free(path_absolute);
+		token = _custom_strtok(NULL, ":");
 	}
-	free(path_rela);
+
+	free(path_relative);
 	return (-1);
 }
+

@@ -1,49 +1,50 @@
 #include "shell.h"
+
 /**
- * main - main arguments functions
- * @ac:count of argumnents
- * @av: arguments
- * @env: environment
- * Return: _exit = 0.
+ * main - Main function to handle command line arguments.
+ * @argc: Count of command line arguments.
+ * @argv: Array of command line arguments.
+ * @envp: Array of environment variables.
+ * Return: Exit code (0 by default).
  */
-int main(int ac, char **av, char **env)
+int main(int argc, char **argv, char **envp)
 {
-	char *getcommand = NULL, **user_command = NULL;
-	int pathValue = 0, _exit = 0, n = 0;
-	(void)ac;
+	char *input_command = NULL, **command_tokens = NULL;
+	int path_status = 0, exit_code = 0, iteration = 0;
+	(void)argc;
 
 	while (1)
 	{
-		getcommand = _getline_command();
-		if (getcommand)
+		input_command = _read_line_command();
+		if (input_command)
 		{
-			pathValue++;
-			user_command = _get_token(getcommand);
-			if (!user_command)
+			iteration++;
+			command_tokens = _tokenize_input(input_command);
+			if (!command_tokens)
 			{
-				free(getcommand);
+				free(input_command);
 				continue;
 			}
-			if ((!_strcmp(user_command[0], "exit")) && user_command[1] == NULL)
-				_exit_command(user_command, getcommand, _exit);
-			if (!_strcmp(user_command[0], "env"))
-				_getenv(env);
+			if ((!_custom_strcmp(command_tokens[0], "exit")) && command_tokens[1] == NULL)
+				_exit_shell(command_tokens, input_command, exit_code);
+			if (!_custom_strcmp(command_tokens[0], "env"))
+				_print_environment(envp);
 			else
 			{
-				n = _values_path(&user_command[0], env);
-				_exit = _fork_fun(user_command, av, env, getcommand, pathValue, n);
-				if (n == 0)
-					free(user_command[0]);
+				path_status = _parse_path(&command_tokens[0], envp);
+				exit_code = _execute_command(command_tokens, argv, envp, input_command, iteration, path_status);
+				if (path_status == 0)
+					free(command_tokens[0]);
 			}
-			free(user_command);
+			free(command_tokens);
 		}
 		else
 		{
 			if (isatty(STDIN_FILENO))
 				write(STDOUT_FILENO, "\n", 1);
-			exit(_exit);
+			exit(exit_code);
 		}
-		free(getcommand);
+		free(input_command);
 	}
-	return (_exit);
+	return (exit_code);
 }

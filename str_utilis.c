@@ -1,83 +1,79 @@
 #include "shell.h"
+
 /**
- *_strcat - copy string to another string.
- *@dest: char
- *@src: char
- *Return: dest
- *
+ * custom_strcat - Concatenates two strings.
+ * @destination: Destination string.
+ * @source: Source string.
+ * Return: Pointer to the destination string.
  */
-
-char *_strcat(char *dest, char *src)
+char *custom_strcat(char *destination, char *source)
 {
-	int d = 0;
-	int s = 0;
+	int dest = 0;
+	int src = 0;
 
-	while (dest[d] != '\0')
+	while (destination[dest] != '\0')
 	{
-		d++;
+		dest++;
 	}
-	while (src[s] != '\0')
+	while (source[src] != '\0')
 	{
-		dest[d] = src[s];
-		d++;
-		s++;
+		destination[dest] = source[src];
+		dest++;
+		src++;
 	}
-	dest[d] = '\0';
-	return (dest);
+	destination[dest] = '\0';
+	return (destination);
 }
 
 /**
- * _strcmp - compare the values of a string
- * @s1: character
- * @s2: character
- * Return: 0
+ * custom_strcmp - Compares two strings.
+ * @a1: First string.
+ * @a2: Second string.
+ * Return: 0 if strings are equal, positive if s1 > s2, negative if s1 < s2.
  */
-
-int _strcmp(char *s1, char *s2)
+int custom_strcmp(char *a1, char *a2)
 {
-	int a;
+	int i;
 
-	for (a = 0; s1[a] != '\0' && s2[a] != '\0'; a++)
+	for (i = 0; a1[i] != '\0' && a2[i] != '\0'; i++)
 	{
-		if (s1[a] != s2[a])
-			return ((int)s1[a] - s2[a]);
+		if (a1[i] != a2[i])
+			return ((int)a1[i] - a2[i]);
 	}
 	return (0);
 }
 
 /**
- * _strlen - copies the string pointed to by src into dest
- * @s: A pointer
- * Return: char pointer to dest
+ * custom_strlen - Computes the length of a string.
+ * @str: Input string.
+ * Return: Length of the string.
  */
-
-int _strlen(char *s)
+int custom_strlen(char *str)
 {
-	int ch = 0;
+	int w = 0;
 
-	while (*(s + ch) != '\0')
+	while (*(str + w) != '\0')
 	{
-		ch++;
+		w++;
 	}
 
-	return (ch);
+	return (w);
 }
 
 /**
- *_strncmp -  function that compares two strings.
- *@s1: string one
- *@s2: string two
- *@n: number of characters
- * Return: diference
+ * custom_strncmp - Compare two strings up to a specified number of characters.
+ * @a1: First string.
+ * @a2: Second string.
+ * @num: Number of characters to compare.
+ * Return: 0 if strings are equal, positive if s1 > s2, negative if s1 < s2.
  */
-
-size_t _strncmp(char *s1, char *s2, size_t n)
+size_t custom_strncmp(char *a1, char *a2, unsigned int num)
 {
 	size_t i, j;
 
-	for (j = 0; s1[j] != '\0' && j < n; j++)
+	for (j = 0; a1[j] != '\0' && j < num; j++)
 	{
-		i = s1[j] - s2[j];
+		i = a1[j] - a2[j];
 
 		if (i != 0)
 		{
@@ -88,23 +84,21 @@ size_t _strncmp(char *s1, char *s2, size_t n)
 }
 
 /**
- * _strcpy - copies the string pointed to by src into dest
- * @dest: destination of the copy
- * @src: source of the copy
- *
- * Return: char pointer to dest
+ * custom_strcpy - Copies a string from source to destination.
+ * @destination: Destination string.
+ * @source: Source string.
+ * Return: Pointer to the destination string.
  */
-
-char *_strcpy(char *dest, char *src)
+char *custom_strcpy(char *destination, char *source)
 {
-	int i = 0;
+	int a = 0;
 
-	while (*(src + i) != '\0')
+	while (*(source + a) != '\0')
 	{
-		*(dest + i) = *(src + i);
-		++i;
+		*(destination + a) = *(source + a);
+		++a;
 	}
-	*(dest + i) = *(src + i);
+	*(destination + a) = *(src + a);
 
-	return (dest);
+	return (destination);
 }
