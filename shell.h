@@ -28,7 +28,5 @@ char **extract_tokens(char *line);
 void exit_command(char **args, char *lin_ptr, int exit_code);
 int fork_proc(char **args, char **sh, char **env, char *lin_ptr, int id, int a);
 char *_custom_strtok(char *input, const char *delimiters);
-char *read_command(void);
-
 
 #endif 
