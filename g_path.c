@@ -13,7 +13,7 @@ char *get_path(char **env)
 	unsigned int len = 5;
 	char *path = NULL;
 
-	for (idx = 0; _strncmp(env[idx], "PATH=", 5); idx++)
+	for (idx = 0; custom_strncmp(env[idx], "PATH=", 5); idx++)
 		;
 
 	if (env[idx] == NULL)

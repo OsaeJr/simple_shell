@@ -13,22 +13,21 @@
 
 extern char **environ;
 
-int _strcmp(char *s1, char *s2);
-size_t _strncmp(char *s1, char *s2, size_t n);
-int _strlen(char *s);
-char *_strcpy(char *dest, char *src);
-char *_strcat(char *dest, char *src);
+int custom_strcmp(char *a1, char *a2);
+size_t custom_strncmp(char *a1, char *a2, unsigned int num);
+int custom_strlen(char *str);
+char *custom_strcpy(char *destination, char *source);
+char *custom_strcat(char *destination, char *source);
 int _putchar(char c);
 
-char *_get_path(char **env);
-int _values_path(char **arg, char **env);
-char *_getline_command(void);
-void _getenv(char **env);
-char **_get_token(char *lineptr);
-void _exit_command(char **args, char *lineptr, int _exit);
-int _fork_fun(char **arg, char **av, char **env,
-char *lineptr, int np, int c);
-char *_strtok(char *str, const char *delim);
+char *get_path(char **env);
+int _parse_path(char **command, char **env);
+char *read_command(void);
+void print_env(char **environment);
+char **extract_tokens(char *line);
+void exit_command(char **args, char *lin_ptr, int exit_code);
+int fork_proc(char **args, char **sh, char **env, char *lin_ptr, int id, int a);
+char *_custom_strtok(char *input, const char *delimiters);
 
 
 #endif 

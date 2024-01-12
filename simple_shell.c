@@ -19,16 +19,16 @@ int main(int argc, char **argv, char **envp)
 		if (input_command)
 		{
 			iteration++;
-			command_tokens = _tokenize_input(input_command);
+			command_tokens = extract_tokens(input_command);
 			if (!command_tokens)
 			{
 				free(input_command);
 				continue;
 			}
 			if ((!_custom_strcmp(command_tokens[0], "exit")) && command_tokens[1] == NULL)
-				_exit_shell(command_tokens, input_command, exit_code);
+				exit_command(command_tokens, input_command, exit_code);
 			if (!_custom_strcmp(command_tokens[0], "env"))
-				_print_environment(envp);
+				print_env(envp);
 			else
 			{
 				path_status = _parse_path(&command_tokens[0], envp);

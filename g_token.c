@@ -22,18 +22,18 @@ char **extract_tokens(char *line)
 			size++;
 	}
 
-	if ((size + 1) == _strlen(line))
+	if ((size + 1) == custom_strlen(line))
 		return (NULL);
 
 	tokens = malloc(sizeof(char *) * (size + 2));
 	if (tokens == NULL)
 		return (NULL);
 
-	token = _strtok(line, " \n\t\r");
+	token = _custom_strtok(line, " \n\t\r");
 	for (i = 0; token != NULL; i++)
 	{
 		tokens[i] = token;
-		token = _strtok(NULL, " \n\t\r");
+		token = _custom_strtok(NULL, " \n\t\r");
 	}
 	tokens[i] = NULL;
 	return (tokens);

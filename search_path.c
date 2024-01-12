@@ -15,7 +15,7 @@ int _parse_path(char **command, char **env)
 	if (stat(*command, &stat_buffer) == 0)
 		return (-1);
 
-	path_relative = _get_path(env);
+	path_relative = get_path(env);
 	if (!path_relative)
 		return (-1);
 
