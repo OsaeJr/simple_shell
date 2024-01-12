@@ -14,17 +14,17 @@ size_t _strcspn(const char *s1, const char *s2);
  **/
 char *_strtok(char *str, const char *delim)
 {
-	static char *a;
+	static char *p;
 
 	if (str)
-		a = str;
-	else if (!a)
+		p = str;
+	else if (!p)
 		return (0);
-	str = a + _strspn(a, delim);
-	a = str + _strcspn(str, delim);
-	if (a == str)
-		return (a = 0);
-	a = *a ? *a = 0, a + 1 : 0;
+	str = p + _strspn(p, delim);
+	p = str + _strcspn(str, delim);
+	if (p == str)
+		return (p = 0);
+	p = *p ? *p = 0, p + 1 : 0;
 	return (str);
 }
 /**
@@ -37,15 +37,15 @@ char *_strtok(char *str, const char *delim)
  **/
 size_t _strcspn(const char *s1, const char *s2)
 {
-	unsigned int d = 0;
+	size_t ret = 0;
 
 	while (*s1)
 	{
 		if (_strchr(s2, *s1))
-			return (d);
-		s1++, d++;
+			return (ret);
+		s1++, ret++;
 	}
-	return (d);
+	return (ret);
 }
 /**
  * _strspn - computes the length of the maximum initial segment of the string
@@ -57,11 +57,11 @@ size_t _strcspn(const char *s1, const char *s2)
  **/
 size_t _strspn(const char *s1, const char *s2)
 {
-	unsigned int e = 0;
+	size_t ret = 0;
 
 	while (*s1 && _strchr(s2, *s1++))
-		e++;
-	return (e);
+		ret++;
+	return (ret);
 }
 /**
  * _strchr - locates the ﬁrst occurrence of c (converted to a char) in the
