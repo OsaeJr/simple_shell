@@ -25,9 +25,9 @@ int main(int argc, char **argv, char **envp)
 				free(input_command);
 				continue;
 			}
-			if ((!_custom_strcmp(command_tokens[0], "exit")) && command_tokens[1] == NULL)
+			if ((!custom_strcmp(command_tokens[0], "exit")) && command_tokens[1] == NULL)
 				exit_command(command_tokens, input_command, exit_code);
-			if (!_custom_strcmp(command_tokens[0], "env"))
+			if (!custom_strcmp(command_tokens[0], "env"))
 				print_env(envp);
 			else
 			{
