@@ -1,50 +1,52 @@
 #include "shell.h"
-
 /**
- * main - Main function to handle command line arguments.
- * @argc: Count of command line arguments.
- * @argv: Array of command line arguments.
- * @envp: Array of environment variables.
- * Return: Exit code (0 by default).
+ * main - main arguments functions
+ * @ac:count of argumnents
+ * @av: arguments
+ * @env: environment
+ * Return: _exit = 0.
  */
-int main(int argc, char **argv, char **envp)
+int main(int ac, char **av, char **env)
 {
-	char *input_command = NULL, **c_tokens = NULL;
-	int path_status = 0, exit_code = 0, i = 0;
-	(void)argc;
+	char *a = NULL;
+	char **b = NULL;
+	int c = 0;
+	int d = 0;
+	int e = 0;
+	(void)stc;
 
 	while (1)
 	{
-		input_command = read_command();
-		if (input_command)
+		a = _getline_command();
+		if (a)
 		{
-			i++;
-			c_tokens = extract_tokens(input_command);
-			if (!c_tokens)
+			c++;
+			b = _get_token(a);
+			if (!b)
 			{
-				free(input_command);
+				free(a);
 				continue;
 			}
-			if ((!custom_strcmp(c_tokens[0], "exit")) && c_tokens[1] == NULL)
-				exit_command(c_tokens, input_command, exit_code);
-			if (!custom_strcmp(c_tokens[0], "env"))
-				print_env(envp);
+			if ((!_strcmp(b[0], "exit")) && b[1] == NULL)
+				_exit_command(b, a, d);
+			if (!_strcmp(b[0], "env"))
+				_getenv(env);
 			else
 			{
-				path_status = _parse_path(&command_tokens[0], envp);
-				exit_code = fork_proc(c_tokens, argv, envp, input_command, i, path_status);
-				if (path_status == 0)
-					free(c_tokens[0]);
+				e = _values_path(&b[0], env);
+				d = _fork_fun(b, av, env, a, c, e);
+				if (e == 0)
+					free(b[0]);
 			}
-			free(c_tokens);
+			free(b);
 		}
 		else
 		{
 			if (isatty(STDIN_FILENO))
 				write(STDOUT_FILENO, "\n", 1);
-			exit(exit_code);
+			exit(d);
 		}
-		free(input_command);
+		free(a);
 	}
-	return (exit_code);
+	return (d);
 }

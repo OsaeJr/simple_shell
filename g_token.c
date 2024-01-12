@@ -1,40 +1,36 @@
 #include "shell.h"
-
 /**
- * extract_tokens - Tokenizes the input string.
- *
- * @line: User command.
- * Return: Pointer to an array of tokens.
+ * _get_token - get token of string
+ * @lineptr: comman user
+ * Return: To a pointer
  */
-char **extract_tokens(char *line)
+
+char **_get_token(char *lineptr)
 {
-	char **tokens = NULL;
-	char *token = NULL;
-	unsigned int i = 0;
-	int size = 0;
+	char **u_com = NULL, *opt = NULL;
+	unsigned int q = 0;
+	int k = 0;
 
-	if (line == NULL)
+	if (lineptr == NULL)
 		return (NULL);
 
-	for (i = 0; line[i]; i++)
+	for (q = 0; lineptr[q]; q++)
 	{
-		if (line[i] == ' ')
-			size++;
+		if (lineptr[q] == ' ')
+			k++;
 	}
-
-	if ((size + 1) == custom_strlen(line))
+	if ((k + 1) == _strlen(lineptr))
+		return (NULL);
+	u_com = malloc(sizeof(char *) * (k + 2));
+	if (u_com == NULL)
 		return (NULL);
 
-	tokens = malloc(sizeof(char *) * (size + 2));
-	if (tokens == NULL)
-		return (NULL);
-
-	token = _custom_strtok(line, " \n\t\r");
-	for (i = 0; token != NULL; i++)
+	opt = _strtok(lineptr, " \n\t\r");
+	for (q = 0; opt != NULL; q++)
 	{
-		tokens[i] = token;
-		token = _custom_strtok(NULL, " \n\t\r");
+		u_com[q] = opt;
+		opt = _strtok(NULL, " \n\t\r");
 	}
-	tokens[i] = NULL;
-	return (tokens);
+	u_com[q] = NULL;
+	return (u_com);
 }

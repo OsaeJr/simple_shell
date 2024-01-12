@@ -1,23 +1,22 @@
 #include "shell.h"
-
 /**
- * read_command - Displays the shell prompt and waits for user input.
- * Return: Pointer to the user input string.
+ * _getline_command - print "#cisfun$ " and wait for the user type something.
+ * Return: line of string input for user
  */
-char *read_command(void)
+
+char *_getline_command(void)
 {
-	char *ptr = NULL;
-	unsigned int user = 0;
+	char *a = NULL;
+	unsigned int b = 0;
 
 	if (isatty(STDIN_FILENO))
 		write(STDOUT_FILENO, "$ ", 2);
 
-	if (getline(&ptr, &user, stdin) == -1)
+	if (getline(&a, &b, stdin) == -1)
 	{
-		free(ptr);
+		free(a);
 		return (NULL);
 	}
 
-	return (ptr);
+	return (a);
 }
-

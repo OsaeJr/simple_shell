@@ -1,45 +1,48 @@
 #include "shell.h"
-
 /**
- * _parse_path - Separates the PATH into new strings.
- * @command: Command input of the user.
- * @env: Environment.
- * Return: A pointer to strings.
+ * _values_path - separate the path in new strings.
+ * @arg: command input of user.
+ * @env: enviroment.
+ * Return:  a pointer to strings.
  */
-int _parse_path(char **command, char **env)
+int _values_path(char **arg, char **env)
 {
-	char *token = NULL, *path_relative = NULL, *path_absolute = NULL;
-	size_t path_length, command_length;
-	struct stat stat_buffer;
+	char *opt = NULL;
+	char *a = NULL;
+	char *b = NULL;
+	unsigned int c;
+	unsigned int d;
+	struct stat stat_lineptr;
 
-	if (stat(*command, &stat_buffer) == 0)
+	if (stat(*arg, &stat_lineptr) == 0)
 		return (-1);
-	path_relative = get_path(env);
-	if (!path_relative)
+	a = _get_path(env);
+	if (!a)
 		return (-1);
-	token = _custom_strtok(path_relative, ":");
-	command_length = custom_strlen(*command);
-
-	while (token)
+	opt = _strtok(a, ":");
+	d = _strlen(*arg);
+	while (opt)
 	{
-		path_length = custom_strlen(token);
-		path_absolute = malloc(sizeof(char) * (path_length + command_length + 2));
-		if (!path_absolute)
+		c = _strlen(opt);
+		b = malloc(sizeof(char) * (c + d + 2));
+		if (!b)
 		{
-			free(path_relative);
+			free(a);
 			return (-1);
 		}
-		path_absolute = custom_strcpy(path_absolute, token);
-		custom_strcat(path_absolute, "/");
-		custom_strcat(path_absolute, *command);
-		if (stat(path_absolute, &stat_buffer) == 0)
+		b = _strcpy(b, opt);
+		_strcat(b, "/");
+		_strcat(b, *arg);
+
+		if (stat(b, &stat_lineptr) == 0)
 		{
-			*command = path_absolute;
-			free(path_relative);
+			*arg = b;
+			free(a);
 			return (0);
 		}
-		free(path_absolute);
-		token = _custom_strtok(NULL, ":");
+		free(b);
+		opt = _strtok(NULL, ":");
 	}
-	free(path_relative);
+	free(a);
 	return (-1);
+}

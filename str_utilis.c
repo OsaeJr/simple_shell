@@ -1,104 +1,111 @@
 #include "shell.h"
-
 /**
- * custom_strcat - Concatenates two strings.
- * @destination: Destination string.
- * @source: Source string.
- * Return: Pointer to the destination string.
+ *_strcat - copy string to another string.
+ *@dest: char
+ *@src: char
+ *Return: dest
+ *
  */
-char *custom_strcat(char *destination, char *source)
-{
-	int dest = 0;
-	int src = 0;
 
-	while (destination[dest] != '\0')
+char *_strcat(char *dest, char *src)
+{
+	int a = 0;
+	int b = 0;
+
+	while (dest[a] != '\0')
 	{
-		dest++;
+		a++;
 	}
-	while (source[src] != '\0')
+	while (src[b] != '\0')
 	{
-		destination[dest] = source[src];
-		dest++;
-		src++;
+		dest[a] = src[b];
+		a++;
+		b++;
 	}
-	destination[dest] = '\0';
-	return (destination);
+	dest[a] = '\0';
+	return (dest);
 }
 
 /**
- * custom_strcmp - Compares two strings.
- * @a1: First string.
- * @a2: Second string.
- * Return: 0 if strings are equal, positive if s1 > s2, negative if s1 < s2.
+ * _strcmp - compare the values of a string
+ * @s1: character
+ * @s2: character
+ * Return: 0
  */
-int custom_strcmp(char *a1, char *a2)
-{
-	int i;
 
-	for (i = 0; a1[i] != '\0' && a2[i] != '\0'; i++)
+int _strcmp(char *s1, char *s2)
+{
+	int c;
+
+	for (c = 0; s1[c] != '\0' && s2[c] != '\0'; c++)
 	{
-		if (a1[i] != a2[i])
-			return ((int)a1[i] - a2[i]);
+		if (s1[c] != s2[c])
+			return ((int)s1[c] - s2[c]);
 	}
 	return (0);
 }
 
 /**
- * custom_strlen - Computes the length of a string.
- * @str: Input string.
- * Return: Length of the string.
+ * _strlen - copies the string pointed to by src into dest
+ * @s: A pointer
+ * Return: char pointer to dest
  */
-int custom_strlen(char *str)
-{
-	int w = 0;
 
-	while (*(str + w) != '\0')
+int _strlen(char *s)
+{
+	int e = 0;
+
+	while (*(s + e) != '\0')
 	{
-		w++;
+		e++;
 	}
 
-	return (w);
+	return (e);
 }
 
 /**
- * custom_strncmp - Compare two strings up to a specified number of characters.
- * @a1: First string.
- * @a2: Second string.
- * @num: Number of characters to compare.
- * Return: 0 if strings are equal, positive if s1 > s2, negative if s1 < s2.
+ *_strncmp -  function that compares two strings.
+ *@s1: string one
+ *@s2: string two
+ *@n: number of characters
+ * Return: diference
  */
-size_t custom_strncmp(char *a1, char *a2, unsigned int num)
+
+size_t _strncmp(char *s1, char *s2, size_t n)
 {
-	size_t i, j;
+	unsigned int x;
+	unsigned int v;
 
-	for (j = 0; a1[j] != '\0' && j < num; j++)
+	for (v = 0; s1[v] != '\0' && v < n; v++)
 	{
-		i = a1[j] - a2[j];
+		i = s1[v] - s2[v];
 
-		if (i != 0)
+		if (x != 0)
 		{
-			return (i);
+			return (x);
 		}
 	}
 	return (0);
 }
 
 /**
- * custom_strcpy - Copies a string from source to destination.
- * @destination: Destination string.
- * @source: Source string.
- * Return: Pointer to the destination string.
+ * _strcpy - copies the string pointed to by src into dest
+ * @dest: destination of the copy
+ * @src: source of the copy
+ *
+ * Return: char pointer to dest
  */
-char *custom_strcpy(char *destination, char *source)
+
+char *_strcpy(char *dest, char *src)
 {
-	int a = 0;
+	int num = 0;
 
-	while (*(source + a) != '\0')
+	while (*(src + num) != '\0')
 	{
-		*(destination + a) = *(source + a);
-		++a;
+		*(dest + num) = *(src + num);
+		++num;
 	}
-	*(destination + a) = *(src + a);
+	*(dest + num) = *(src + num);
 
-	return (destination);
+	return (dest);
 }
