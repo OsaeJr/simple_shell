@@ -43,4 +43,3 @@ int _parse_path(char **command, char **env)
 	}
 	free(path_relative);
 	return (-1);
-}
