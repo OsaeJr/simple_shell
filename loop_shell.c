@@ -1,71 +1,71 @@
 #include "main.h"
 
 /**
- * without_comment - deletes comments from the input
+ * remove_comment - Deletes comments from the input
  *
- * @in: input string
- * Return: input without comments
+ * @input: Input string
+ * Return: Input without comments or NULL if the entire input is a comment
  */
-char *without_comment(char *in)
+char *remove_comment(char *input)
 {
 	int i, up_to;
 
 	up_to = 0;
-	for (i = 0; in[i]; i++)
+	for (i = 0; input[i]; i++)
 	{
-		if (in[i] == '#')
+		if (input[i] == '#')
 		{
 			if (i == 0)
 			{
-				free(in);
+				free(input);
 				return (NULL);
 			}
 
-			if (in[i - 1] == ' ' || in[i - 1] == '\t' || in[i - 1] == ';')
+			if (input[i - 1] == ' ' || input[i - 1] == '\t' || input[i - 1] == ';')
 				up_to = i;
 		}
 	}
 
 	if (up_to != 0)
 	{
-		in = _realloc(in, i, up_to + 1);
-		in[up_to] = '\0';
+		input = _realloc(input, i, up_to + 1);
+		input[up_to] = '\0';
 	}
 
-	return (in);
+	return (input);
 }
 
 /**
- * shell_loop - Loop of shell
- * @datash: data relevant (av, input, args)
+ * run_shell_loop - Main loop of the shell
+ * @data: Data structure containing relevant information (av, input, args)
  *
- * Return: no return.
+ * Return: No return.
  */
-void shell_loop(data_shell *datash)
+void run_shell_loop(data_shell *data)
 {
-	int loop, i_eof;
+	int loop, eof_indicator;
 	char *input;
 
 	loop = 1;
 	while (loop == 1)
 	{
 		write(STDIN_FILENO, "^-^ ", 4);
-		input = read_line(&i_eof);
-		if (i_eof != -1)
+		input = read_line(&eof_indicator);
+		if (eof_indicator != -1)
 		{
-			input = without_comment(input);
+			input = remove_comment(input);
 			if (input == NULL)
 				continue;
 
-			if (check_syntax_error(datash, input) == 1)
+			if (check_syntax_error(data, input) == 1)
 			{
-				datash->status = 2;
+				data->status = 2;
 				free(input);
 				continue;
 			}
-			input = rep_var(input, datash);
-			loop = split_commands(datash, input);
-			datash->counter += 1;
+			input = replace_variable(input, data);
+			loop = split_commands(data, input);
+			data->counter += 1;
 			free(input);
 		}
 		else

@@ -1,73 +1,72 @@
 #include "main.h"
 
 /**
- * free_data - frees data structure
+ * free_data - Frees data structure
  *
- * @datash: data structure
- * Return: no return
+ * @data: Data structure
+ * Return: No return
  */
-void free_data(data_shell *datash)
+void free_data(data_shell *data)
 {
-	unsigned int i;
+	unsigned int j;
 
-	for (i = 0; datash->_environ[i]; i++)
+	for (j = 0; data->_environ[j]; j++)
 	{
-		free(datash->_environ[i]);
+		free(data->_environ[j]);
 	}
 
-	free(datash->_environ);
-	free(datash->pid);
+	free(data->_environ);
+	free(data->pid);
 }
 
 /**
- * set_data - Initialize data structure
+ * init_data - Initializes data structure
  *
- * @datash: data structure
- * @av: argument vector
- * Return: no return
+ * @data: Data structure
+ * @args: Argument vector
+ * Return: No return
  */
-void set_data(data_shell *datash, char **av)
+void init_data(data_shell *data, char **args)
 {
-	unsigned int i;
+	unsigned int j;
 
-	datash->av = av;
-	datash->input = NULL;
-	datash->args = NULL;
-	datash->status = 0;
-	datash->counter = 1;
+	data->av = args;
+	data->input = NULL;
+	data->args = NULL;
+	data->status = 0;
+	data->counter = 1;
 
-	for (i = 0; environ[i]; i++)
-		;
+	for (j = 0; environ[j]; j++)
 
-	datash->_environ = malloc(sizeof(char *) * (i + 1));
+	data->_environ = malloc(sizeof(char *) * (j + 1));
 
-	for (i = 0; environ[i]; i++)
+	for (j = 0; environ[j]; j++)
 	{
-		datash->_environ[i] = _strdup(environ[i]);
+		data->_environ[j] = _strdup(environ[j]);
 	}
 
-	datash->_environ[i] = NULL;
-	datash->pid = aux_itoa(getpid());
+	data->_environ[j] = NULL;
+	data->pid = aux_itoa(getpid());
 }
 
 /**
  * main - Entry point
  *
- * @ac: argument count
- * @av: argument vector
+ * @argc: Argument count
+ * @argv: Argument vector
  *
  * Return: 0 on success.
  */
-int main(int ac, char **av)
+int main(int argc, char **argv)
 {
-	data_shell datash;
-	(void) ac;
+	data_shell data;
+	(void) argc;
 
-	signal(SIGINT, get_sigint);
-	set_data(&datash, av);
-	shell_loop(&datash);
-	free_data(&datash);
-	if (datash.status < 0)
+	signal(SIGINT, handle_sigint);
+	init_data(&data, argv);
+	run_shell_loop(&data);
+	free_data(&data);
+	if (data.status < 0)
 		return (255);
-	return (datash.status);
+	return (data.status);
 }
