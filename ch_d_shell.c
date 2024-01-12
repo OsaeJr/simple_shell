@@ -1,44 +1,44 @@
 #include "main.h"
 
 /**
- * change_current_directory - Changes the current directory.
- * @datash: Data relevant.
- * Return: 1 on success.
+ * cd_shell - changes current directory
+ *
+ * @datash: data relevant
+ * Return: 1 on success
  */
-int change_current_directory(data_shell *datash)
+int cd_shell(data_shell *datash)
 {
-	char *t_directory;
-	int is_home, is_home_alias, is_double_dash;
+	char *dir;
+	int ishome, ishome2, isddash;
 
-	t_directory = datash->args[1];
+	dir = datash->args[1];
 
-	if (t_directory != NULL)
+	if (dir != NULL)
 	{
-		is_home = _strcmp("$HOME", t_directory);
-		is_home_alias = _strcmp("~", t_directory);
-		is_double_dash = _strcmp("--", t_directory);
+		ishome = _strcmp("$HOME", dir);
+		ishome2 = _strcmp("~", dir);
+		isddash = _strcmp("--", dir);
 	}
 
-	if (t_directory == NULL || !is_home || !is_home_alias || !is_double_dash)
+	if (dir == NULL || !ishome || !ishome2 || !isddash)
 	{
-		change_to_home_directory(datash);
+		cd_to_home(datash);
 		return (1);
 	}
 
-	if (_strcmp("-", t_directory) == 0)
+	if (_strcmp("-", dir) == 0)
 	{
-		change_to_previous_directory(datash);
+		cd_previous(datash);
 		return (1);
 	}
 
-	if (_strcmp(".", t_directory) == 0 || _strcmp("..", t_directory) == 0)
+	if (_strcmp(".", dir) == 0 || _strcmp("..", dir) == 0)
 	{
-		change_to_parent_directory(datash);
+		cd_dot(datash);
 		return (1);
 	}
 
-	change_to_directory(datash);
+	cd_to(datash);
 
 	return (1);
 }
-

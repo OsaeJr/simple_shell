@@ -1,91 +1,144 @@
 #include "main.h"
 
 /**
- * generate_error_message - Generates error message.
+ * strcat_cd - function that concatenates the message for cd error
  *
- * @shell_data: Data relevant (directory).
- * @error_type: Type of error message.
- * Return: Error message.
+ * @datash: data relevant (directory)
+ * @msg: message to print
+ * @error: output message
+ * @ver_str: counter lines
+ * Return: error message
  */
-char *generate_error_message(data_shell *shell_data, int error_type)
+char *strcat_cd(data_shell *datash, char *msg, char *error, char *ver_str)
 {
-	int length, id_len;
-	char *error_message, *line_counter, *msg;
-	line_counter = aux_itoa(shell_data->counter);
+	char *illegal_flag;
 
-	switch (error_type)
+	_strcpy(error, datash->av[0]);
+	_strcat(error, ": ");
+	_strcat(error, ver_str);
+	_strcat(error, ": ");
+	_strcat(error, datash->args[0]);
+	_strcat(error, msg);
+	if (datash->args[1][0] == '-')
 	{
-	case 1:
-		/* cd error message */
-		msg = (shell_data->args[1][0] == '-') ? ": Illegal opt " : ": can't cd to ";
-		id_len = (shell_data->args[1][0] == '-') ? 2 : _strlen(shell_data->args[1]);
-		break;
-	case 2:
-		/* Command not found error message */
-		message = ": not found\n";
-		id_length = 0;
-		break;
-	case 3:
-		/* Exit shell error message */
-		message = ": Illegal number: ";
-		id_length = _strlen(shell_data->args[1]);
-		break;
-	default:
-		free(line_counter);
+		illegal_flag = malloc(3);
+		illegal_flag[0] = '-';
+		illegal_flag[1] = datash->args[1][1];
+		illegal_flag[2] = '\0';
+		_strcat(error, illegal_flag);
+		free(illegal_flag);
+	}
+	else
+	{
+		_strcat(error, datash->args[1]);
+	}
+
+	_strcat(error, "\n");
+	_strcat(error, "\0");
+	return (error);
+}
+
+/**
+ * error_get_cd - error message for cd command in get_cd
+ * @datash: data relevant (directory)
+ * Return: Error message
+ */
+char *error_get_cd(data_shell *datash)
+{
+	int length, len_id;
+	char *error, *ver_str, *msg;
+
+	ver_str = aux_itoa(datash->counter);
+	if (datash->args[1][0] == '-')
+	{
+		msg = ": Illegal option ";
+		len_id = 2;
+	}
+	else
+	{
+		msg = ": can't cd to ";
+		len_id = _strlen(datash->args[1]);
+	}
+
+	length = _strlen(datash->av[0]) + _strlen(datash->args[0]);
+	length += _strlen(ver_str) + _strlen(msg) + len_id + 5;
+	error = malloc(sizeof(char) * (length + 1));
+
+	if (error == 0)
+	{
+		free(ver_str);
 		return (NULL);
 	}
-	length = _strlen(shell_data->av[0]) + _strlen(line_counter) + _strlen(shell_data->args[0]) + _strlen(message) + id_length + 5;
-	error_message = malloc(sizeof(char) * (length + 1));
 
-	if (error_message == 0)
+	error = strcat_cd(datash, msg, error, ver_str);
+
+	free(ver_str);
+
+	return (error);
+}
+
+/**
+ * error_not_found - generic error message for command not found
+ * @datash: data relevant (counter, arguments)
+ * Return: Error message
+ */
+char *error_not_found(data_shell *datash)
+{
+	int length;
+	char *error;
+	char *ver_str;
+
+	ver_str = aux_itoa(datash->counter);
+	length = _strlen(datash->av[0]) + _strlen(ver_str);
+	length += _strlen(datash->args[0]) + 16;
+	error = malloc(sizeof(char) * (length + 1));
+	if (error == 0)
 	{
-		free(line_counter);
+		free(error);
+		free(ver_str);
 		return (NULL);
 	}
-	_strcpy(error_message, shell_data->av[0]);
-	_strcat(error_message, ": ");
-	_strcat(error_message, line_counter);
-	_strcat(error_message, ": ");
-	_strcat(error_message, shell_data->args[0]);
-	_strcat(error_message, message);
-	if (error_type == 1 && shell_data->args[1][0] == '-')
+	_strcpy(error, datash->av[0]);
+	_strcat(error, ": ");
+	_strcat(error, ver_str);
+	_strcat(error, ": ");
+	_strcat(error, datash->args[0]);
+	_strcat(error, ": not found\n");
+	_strcat(error, "\0");
+	free(ver_str);
+	return (error);
+}
+
+/**
+ * error_exit_shell - generic error message for exit in get_exit
+ * @datash: data relevant (counter, arguments)
+ *
+ * Return: Error message
+ */
+char *error_exit_shell(data_shell *datash)
+{
+	int length;
+	char *error;
+	char *ver_str;
+
+	ver_str = aux_itoa(datash->counter);
+	length = _strlen(datash->av[0]) + _strlen(ver_str);
+	length += _strlen(datash->args[0]) + _strlen(datash->args[1]) + 23;
+	error = malloc(sizeof(char) * (length + 1));
+	if (error == 0)
 	{
-		char illegal_flag[3] = {'-', shell_data->args[1][1], '\0'};
-
-		_strcat(error_message, illegal_flag);
+		free(ver_str);
+		return (NULL);
 	}
-	_strcat(error_message, "\n");
-	_strcat(error_message, "\0");
-	free(line_counter);
-	return (error_message);
-}
+	_strcpy(error, datash->av[0]);
+	_strcat(error, ": ");
+	_strcat(error, ver_str);
+	_strcat(error, ": ");
+	_strcat(error, datash->args[0]);
+	_strcat(error, ": Illegal number: ");
+	_strcat(error, datash->args[1]);
+	_strcat(error, "\n\0");
+	free(ver_str);
 
-/**
- * cd_error_message - Error message for cd command in get_cd.
- * @shell_data: Data relevant (directory).
- * Return: Error message.
- */
-char *cd_error_message(data_shell *shell_data)
-{
-	return (generate_error_message(shell_data, 1));
-}
-
-/**
- * not_found_error_message - Generic error message for command not found.
- * @shell_data: Data relevant (counter, arguments).
- * Return: Error message.
- */
-char *not_found_error_message(data_shell *shell_data)
-{
-	return (generate_error_message(shell_data, 2));
-}
-
-/**
- * exit_shell_error_message - Generic error message for exit in get_exit.
- * @shell_data: Data relevant (counter, arguments).
- * Return: Error message.
- */
-char *exit_shell_error_message(data_shell *shell_data)
-{
-	return (generate_error_message(shell_data, 3));
+	return (error);
 }

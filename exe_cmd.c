@@ -1,97 +1,96 @@
 #include "main.h"
 
 /**
- * isCurrentDirectory - Checks if ":" is in the current directory.
- * @path: Type char pointer representing the path.
- * @currentIndex: Type int pointer representing the index.
- * Return: {1 if the path is searchable in the cd, 0 otherwise}.
+ * is_cdir - checks ":" if is in the current directory.
+ * @path: type char pointer char.
+ * @i: type int pointer of index.
+ * Return: 1 if the path is searchable in the cd, 0 otherwise.
  */
-int isCurrentDirectory(char *path, int *currentIndex)
+int is_cdir(char *path, int *i)
 {
-	if (path[*currentIndex] == ':')
+	if (path[*i] == ':')
 		return (1);
 
-	while (path[*currentIndex] != ':' && path[*currentIndex])
-		(*currentIndex)++;
+	while (path[*i] != ':' && path[*i])
+	{
+		*i += 1;
+	}
 
-	if (path[*currentIndex])
-		(*currentIndex)++;
+	if (path[*i])
+		*i += 1;
 
 	return (0);
 }
 
 /**
- * findExecutablePath - Locates a command in the PATH environment.
+ * _which - locates a command
  *
- * @command: Command name.
- * @environment: Environment variable.
- * Return: {Location of the command}.
+ * @cmd: command name
+ * @_environ: environment variable
+ * Return: location of the command.
  */
-char *findExecutablePath(char *command, char **environment)
+char *_which(char *cmd, char **_environ)
 {
-	char *path, *pathCopy, *tokenPath, *dir;
-	int dirLength, commandLength, currentIndex;
+	char *path, *ptr_path, *token_path, *dir;
+	int len_dir, len_cmd, i;
 	struct stat st;
 
-	path = _getenv("PATH", environment);
+	path = _getenv("PATH", _environ);
 	if (path)
 	{
-		pathCopy = _strdup(path);
-		commandLength = _strlen(command);
-		tokenPath = _strtok(pathCopy, ":");
-		currentIndex = 0;
-
-		while (tokenPath != NULL)
+		ptr_path = _strdup(path);
+		len_cmd = _strlen(cmd);
+		token_path = _strtok(ptr_path, ":");
+		i = 0;
+		while (token_path != NULL)
 		{
-			if (isCurrentDirectory(path, &currentIndex))
-				if (stat(command, &st) == 0)
-					return (command);
-
-			dirLength = _strlen(tokenPath);
-			dir = malloc(dirLength + commandLength + 2);
-			_strcpy(dir, tokenPath);
+			if (is_cdir(path, &i))
+				if (stat(cmd, &st) == 0)
+					return (cmd);
+			len_dir = _strlen(token_path);
+			dir = malloc(len_dir + len_cmd + 2);
+			_strcpy(dir, token_path);
 			_strcat(dir, "/");
-			_strcat(dir, command);
+			_strcat(dir, cmd);
 			_strcat(dir, "\0");
 			if (stat(dir, &st) == 0)
 			{
-				free(pathCopy);
+				free(ptr_path);
 				return (dir);
 			}
 			free(dir);
-			tokenPath = _strtok(NULL, ":");
+			token_path = _strtok(NULL, ":");
 		}
-		free(pathCopy);
-		if (stat(command, &st) == 0)
-			return (command);
+		free(ptr_path);
+		if (stat(cmd, &st) == 0)
+			return (cmd);
 		return (NULL);
 	}
-	if (command[0] == '/')
-		if (stat(command, &st) == 0)
-			return (command);
+	if (cmd[0] == '/')
+		if (stat(cmd, &st) == 0)
+			return (cmd);
 	return (NULL);
 }
 
 /**
- * isExecutableFile - Determines if the file is an executable.
+ * is_executable - determines if is an executable
  *
- * @dataShell: Data structure.
- * Return: {0 if it's not an executable, else the index of the executable}.
+ * @datash: data structure
+ * Return: 0 if is not an executable, other number if it does
  */
-int isExecutableFile(data_shell *dataShell)
+int is_executable(data_shell *datash)
 {
 	struct stat st;
 	int i;
 	char *input;
 
-	input = dataShell->args[0];
+	input = datash->args[0];
 	for (i = 0; input[i]; i++)
 	{
 		if (input[i] == '.')
 		{
 			if (input[i + 1] == '.')
 				return (0);
-
 			if (input[i + 1] == '/')
 				continue;
 			else
@@ -107,47 +106,47 @@ int isExecutableFile(data_shell *dataShell)
 		else
 			break;
 	}
-
 	if (i == 0)
 		return (0);
 
 	if (stat(input + i, &st) == 0)
+	{
 		return (i);
-
-	getError(dataShell, 127);
+	}
+	get_error(datash, 127);
 	return (-1);
 }
 
 /**
- * checkExecutePermissions - Verifies if the user has permissions to access.
+ * check_error_cmd - verifies if user has permissions to access
  *
- * @directory: Destination directory.
- * @dataShell: Data structure.
- * Return: {1 if there is an error, 0 if not}.
+ * @dir: destination directory
+ * @datash: data structure
+ * Return: 1 if there is an error, 0 if not
  */
-int checkExecutePermissions(char *directory, data_shell *dataShell)
+int check_error_cmd(char *dir, data_shell *datash)
 {
-	if (directory == NULL)
+	if (dir == NULL)
 	{
-		getError(dataShell, 127);
+		get_error(datash, 127);
 		return (1);
 	}
 
-	if (_strcmp(dataShell->args[0], directory) != 0)
+	if (_strcmp(datash->args[0], dir) != 0)
 	{
-		if (access(directory, X_OK) == -1)
+		if (access(dir, X_OK) == -1)
 		{
-			getError(dataShell, 126);
-			free(directory);
+			get_error(datash, 126);
+			free(dir);
 			return (1);
 		}
-		free(directory);
+		free(dir);
 	}
 	else
 	{
-		if (access(dataShell->args[0], X_OK) == -1)
+		if (access(datash->args[0], X_OK) == -1)
 		{
-			getError(dataShell, 126);
+			get_error(datash, 126);
 			return (1);
 		}
 	}
@@ -156,50 +155,51 @@ int checkExecutePermissions(char *directory, data_shell *dataShell)
 }
 
 /**
- * executeCommand - Executes command lines.
+ * cmd_exec - executes command lines
  *
- * @dataShell: Data relevant (args and input).
- * Return: {1 on success}.
+ * @datash: data relevant (args and input)
+ * Return: 1 on success.
  */
-int executeCommand(data_shell *dataShell)
+int cmd_exec(data_shell *datash)
 {
-	pid_t processId;
-	pid_t waitProcessId;
-	int processState;
-	int execIndex;
-	char *executableDir;
-	(void) waitProcessId;
+	pid_t pd;
+	pid_t wpd;
+	int state;
+	int exec;
+	char *dir;
+	(void) wpd;
 
-	execIndex = isExecutableFile(dataShell);
-	if (execIndex == -1)
+	exec = is_executable(datash);
+	if (exec == -1)
 		return (1);
-	if (execIndex == 0)
+	if (exec == 0)
 	{
-		executableDir = findExecutablePath(dataShell->args[0], dataShell
-	->_environ);
-		if (checkExecutePermissions(executableDir, dataShell) == 1)
+		dir = _which(datash->args[0], datash->_environ);
+		if (check_error_cmd(dir, datash) == 1)
 			return (1);
 	}
-	processId = fork();
-	if (processId == 0)
+
+	pd = fork();
+	if (pd == 0)
 	{
-		if (execIndex == 0)
-			executableDir = findExecutablePath(dataShell->args[0], dataShell->_environ);
+		if (exec == 0)
+			dir = _which(datash->args[0], datash->_environ);
 		else
-			executableDir = dataShell->args[0];
-		execve(executableDir + execIndex, dataShell->args, dataShell->_environ);
+			dir = datash->args[0];
+		execve(dir + exec, datash->args, datash->_environ);
 	}
-	else if (processId < 0)
+	else if (pd < 0)
 	{
-		perror(dataShell->av[0]);
+		perror(datash->av[0]);
 		return (1);
 	}
 	else
 	{
-		do	{
-			waitProcessId = waitpid(processId, &processState, WUNTRACED);
-			}
-		while (!WIFEXITED(processState) && !WIFSIGNALED(processState));
-		return (1);
+		do {
+			wpd = waitpid(pd, &state, WUNTRACED);
+		} while (!WIFEXITED(state) && !WIFSIGNALED(state));
 	}
+
+	datash->status = state / 256;
+	return (1);
 }

@@ -1,45 +1,46 @@
 #include "main.h"
 
 /**
- * set_input_buffer - assigns the input buffer for get_input
- * @l_buff: Buffer that stores the input string
- * @buff: String that is assigned to line_buffer
- * @b_size: Size of line_buffer
- * @i_size: Size of buffer
+ * bring_line - assigns the line var for get_line
+ * @lineptr: Buffer that store the input str
+ * @buffer: str that is been called to line
+ * @n: size of line
+ * @j: size of buffer
  */
-void set_input_buffer(char **l_buff, size_t *b_size, char *buff, size_t i_size)
+void bring_line(char **lineptr, size_t *n, char *buffer, size_t j)
 {
-	if (*l_buff == NULL)
+
+	if (*lineptr == NULL)
 	{
-		if (i_size > INPUT_BUFFER_SIZE)
-			*b_size = i_size;
+		if  (j > BUFSIZE)
+			*n = j;
+
 		else
-			*b_size = INPUT_BUFFER_SIZE;
-		*l_buff = buff;
+			*n = BUFSIZE;
+		*lineptr = buffer;
 	}
-	else if (*b_size < i_size)
+	else if (*n < j)
 	{
-		if (i_size > INPUT_BUFFER_SIZE)
-			*b_size = input_size;
+		if (j > BUFSIZE)
+			*n = j;
 		else
-			*b_size = INPUT_BUFFER_SIZE;
-		*l_buff = buff;
+			*n = BUFSIZE;
+		*lineptr = buffer;
 	}
 	else
 	{
-		_strcpy(*l_buff, buff);
-		free(buff);
+		_strcpy(*lineptr, buffer);
+		free(buffer);
 	}
 }
-
 /**
- * get_input - Read input from stream
- * @line_buffer: Buffer that stores the input
- * @buffer_size: Size of line_buffer
- * @stream: Stream to read from
+ * get_line - Read inpt from stream
+ * @lineptr: buffer that stores the input
+ * @n: size of lineptr
+ * @stream: stream to read from
  * Return: The number of bytes
  */
-ssize_t get_input(char **line_buffer, size_t *buffer_size, FILE *stream)
+ssize_t get_line(char **lineptr, size_t *n, FILE *stream)
 {
 	int i;
 	static ssize_t input;
@@ -53,7 +54,7 @@ ssize_t get_input(char **line_buffer, size_t *buffer_size, FILE *stream)
 		return (-1);
 	input = 0;
 
-	buffer = malloc(sizeof(char) * INPUT_BUFFER_SIZE);
+	buffer = malloc(sizeof(char) * BUFSIZE);
 	if (buffer == 0)
 		return (-1);
 	while (t != '\n')
@@ -69,13 +70,13 @@ ssize_t get_input(char **line_buffer, size_t *buffer_size, FILE *stream)
 			input++;
 			break;
 		}
-		if (input >= INPUT_BUFFER_SIZE)
+		if (input >= BUFSIZE)
 			buffer = _realloc(buffer, input, input + 1);
 		buffer[input] = t;
 		input++;
 	}
 	buffer[input] = '\0';
-	set_input_buffer(line_buffer, buffer_size, buffer, input);
+	bring_line(lineptr, n, buffer, input);
 	retval = input;
 	if (i != 0)
 		input = 0;

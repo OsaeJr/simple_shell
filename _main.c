@@ -1,73 +1,73 @@
 #include "main.h"
 
 /**
- * release_resources - Frees the data structure
+ * free_data - frees data structure
  *
- * @shell_data: Data structure
- * Return: No return
+ * @datash: data structure
+ * Return: no return
  */
-void release_resources(data_shell *shell_data)
+void free_data(data_shell *datash)
 {
 	unsigned int i;
 
-	for (i = 0; shell_data->environment[i]; i++)
+	for (i = 0; datash->_environ[i]; i++)
 	{
-		free(shell_data->environment[i]);
+		free(datash->_environ[i]);
 	}
 
-	free(shell_data->environment);
-	free(shell_data->process_id);
+	free(datash->_environ);
+	free(datash->pid);
 }
 
 /**
- * initialize_data - Initializes the data structure
+ * set_data - Initialize data structure
  *
- * @shell_data: Data structure
- * @arguments: Argument vector
- * Return: No return
+ * @datash: data structure
+ * @av: argument vector
+ * Return: no return
  */
-void initialize_data(data_shell *shell_data, char **arguments)
+void set_data(data_shell *datash, char **av)
 {
 	unsigned int i;
 
-	shell_data->argument_vector = arguments;
-	shell_data->input = NULL;
-	shell_data->arguments = NULL;
-	shell_data->status = 0;
-	shell_data->execution_counter = 1;
+	datash->av = av;
+	datash->input = NULL;
+	datash->args = NULL;
+	datash->status = 0;
+	datash->counter = 1;
 
 	for (i = 0; environ[i]; i++)
 		;
 
-	shell_data->environment = malloc(sizeof(char *) * (i + 1));
+	datash->_environ = malloc(sizeof(char *) * (i + 1));
 
 	for (i = 0; environ[i]; i++)
 	{
-		shell_data->environment[i] = _strdup(environ[i]);
+		datash->_environ[i] = _strdup(environ[i]);
 	}
 
-	shell_data->environment[i] = NULL;
-	shell_data->process_id = convert_to_string(getpid());
+	datash->_environ[i] = NULL;
+	datash->pid = aux_itoa(getpid());
 }
 
 /**
- * main - Entry point of the shell program
+ * main - Entry point
  *
- * @argument_count: Number of command line arguments
- * @argument_vector: Array of command line arguments
+ * @ac: argument count
+ * @av: argument vector
  *
  * Return: 0 on success.
  */
-int main(int argument_count, char **argument_vector)
+int main(int ac, char **av)
 {
-	data_shell shell_data;
-	(void) argument_count;
+	data_shell datash;
+	(void) ac;
 
-	signal(SIGINT, handle_sigint);
-	initialize_data(&shell_data, argument_vector);
-	shell_loop(&shell_data);
-	release_resources(&shell_data);
-	if (shell_data.status < 0)
+	signal(SIGINT, get_sigint);
+	set_data(&datash, av);
+	shell_loop(&datash);
+	free_data(&datash);
+	if (datash.status < 0)
 		return (255);
-	return (shell_data.status);
+	return (datash.status);
 }

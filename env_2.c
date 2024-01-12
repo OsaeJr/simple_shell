@@ -1,14 +1,14 @@
 #include "main.h"
 
 /**
- * copyInfo - Copies info to create
- * a new environment variable or alias.
- * @name: Name (environment variable or alias).
- * @value: Value (environment variable or alias).
+ * copy_info - copies info to create
+ * a new env or alias
+ * @name: name (env or alias)
+ * @value: value (env or alias)
  *
- * Return: New environment variable or alias.
+ * Return: new env or alias.
  */
-char *copyInfo(char *name, char *value)
+char *copy_info(char *name, char *value)
 {
 	char *new;
 	int len_name, len_value, len;
@@ -16,7 +16,7 @@ char *copyInfo(char *name, char *value)
 	len_name = _strlen(name);
 	len_value = _strlen(value);
 	len = len_name + len_value + 2;
-	new = malloc(sizeof(char) * len);
+	new = malloc(sizeof(char) * (len));
 	_strcpy(new, name);
 	_strcat(new, "=");
 	_strcat(new, value);
@@ -26,14 +26,14 @@ char *copyInfo(char *name, char *value)
 }
 
 /**
- * set_environment_variable - Sets an environment variable.
+ * set_env - sets an environment variable
  *
- * @name: Name of the environment variable.
- * @value: Value of the environment variable.
- * @datash: Data structure (environ).
- * Return: No return.
+ * @name: name of the environment variable
+ * @value: value of the environment variable
+ * @datash: data structure (environ)
+ * Return: no return
  */
-void set_environment_variable(char *name, char *value, data_shell *datash)
+void set_env(char *name, char *value, data_shell *datash)
 {
 	int i;
 	char *var_env, *name_env;
@@ -58,33 +58,34 @@ void set_environment_variable(char *name, char *value, data_shell *datash)
 }
 
 /**
- * _set_environment - Compares environment variable names
+ * _setenv - compares env variables names
  * with the name passed.
- * @datash: Data relevant (environment variable name and value).
+ * @datash: data relevant (env name and env value)
  *
  * Return: 1 on success.
  */
-int _set_environment(data_shell *datash)
+int _setenv(data_shell *datash)
 {
+
 	if (datash->args[1] == NULL || datash->args[2] == NULL)
 	{
 		get_error(datash, -1);
 		return (1);
 	}
 
-	set_environment_variable(datash->args[1], datash->args[2], datash);
+	set_env(datash->args[1], datash->args[2], datash);
 
 	return (1);
 }
 
 /**
- * _unset_environment - Deletes an environment variable.
+ * _unsetenv - deletes a environment variable
  *
- * @datash: Data relevant (environment variable name).
+ * @datash: data relevant (env name)
  *
  * Return: 1 on success.
  */
-int _unset_environment(data_shell *datash)
+int _unsetenv(data_shell *datash)
 {
 	char **realloc_environ;
 	char *var_env, *name_env;
@@ -111,7 +112,7 @@ int _unset_environment(data_shell *datash)
 		get_error(datash, -1);
 		return (1);
 	}
-	realloc_environ = malloc(sizeof(char *) * i);
+	realloc_environ = malloc(sizeof(char *) * (i));
 	for (i = j = 0; datash->_environ[i]; i++)
 	{
 		if (i != k)

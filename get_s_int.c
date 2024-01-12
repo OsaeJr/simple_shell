@@ -1,11 +1,11 @@
 #include "main.h"
 
 /**
- * handle_sigint - Handles the Ctrl + C signal in the prompt
- * @signal: Signal handler
+ * get_sigint - Handle the crtl + c call in prompt
+ * @sig: Signal handler
  */
-void handle_sigint(int signal)
+void get_sigint(int sig)
 {
-	(void)signal;
+	(void)sig;
 	write(STDOUT_FILENO, "\n^-^ ", 5);
 }

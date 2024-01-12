@@ -1,20 +1,20 @@
 #include "main.h"
 
 /**
- * compare_env_name - Compares environment variable names
+ * cmp_env_name - compares env variables names
  * with the name passed.
- * @env_var: Name of the environment variable.
- * @name: Name passed.
+ * @nenv: name of the environment variable
+ * @name: name passed
  *
- * Return: (0) if they are not equal. (i + 1) if they are.
+ * Return: 0 if are not equal. Another value if they are.
  */
-int compare_env_name(const char *env_var, const char *name)
+int cmp_env_name(const char *nenv, const char *name)
 {
 	int i;
 
-	for (i = 0; env_var[i] != '='; i++)
+	for (i = 0; nenv[i] != '='; i++)
 	{
-		if (env_var[i] != name[i])
+		if (nenv[i] != name[i])
 		{
 			return (0);
 		}
@@ -24,56 +24,57 @@ int compare_env_name(const char *env_var, const char *name)
 }
 
 /**
- * get_environment_variable - Get an environment variable.
- * @name: Name of the environment variable.
- * @environment: Environment variable.
+ * _getenv - get an environment variable
+ * @name: name of the environment variable
+ * @_environ: environment variable
  *
- * Return: (Value of the environment variable) if found.
- * In other case, returns (NULL).
+ * Return: value of the environment variable if is found.
+ * In other case, returns NULL.
  */
-char *get_environment_variable(const char *name, char **environment)
+char *_getenv(const char *name, char **_environ)
 {
-	char *env_ptr;
-	int i, move;
+	char *ptr_env;
+	int i, mov;
 
-	/* Initialize env_ptr value */
-	env_ptr = NULL;
-	move = 0;
+	/* Initialize ptr_env value */
+	ptr_env = NULL;
+	mov = 0;
 	/* Compare all environment variables */
-	/* environment is declared in the header file */
-	for (i = 0; environment[i]; i++)
+	/* environ is declared in the header file */
+	for (i = 0; _environ[i]; i++)
 	{
 		/* If name and env are equal */
-		move = compare_env_name(environment[i], name);
-		if (move)
+		mov = cmp_env_name(_environ[i], name);
+		if (mov)
 		{
-			env_ptr = environment[i];
+			ptr_env = _environ[i];
 			break;
 		}
 	}
 
-	return (env_ptr + move);
+	return (ptr_env + mov);
 }
 
 /**
- * print_environment_variables - Prints the environment variables.
+ * _env - prints the evironment variables
  *
- * @data_shell: Data relevant.
- * Return: (1) on success.
+ * @datash: data relevant.
+ * Return: 1 on success.
  */
-int print_environment_variables(data_shell *data_shell)
+int _env(data_shell *datash)
 {
 	int i, j;
 
-	for (i = 0; data_shell->_environ[i]; i++)
+	for (i = 0; datash->_environ[i]; i++)
 	{
-		for (j = 0; data_shell->_environ[i][j]; j++)
+
+		for (j = 0; datash->_environ[i][j]; j++)
 			;
 
-		write(STDOUT_FILENO, data_shell->_environ[i], j);
+		write(STDOUT_FILENO, datash->_environ[i], j);
 		write(STDOUT_FILENO, "\n", 1);
 	}
-	data_shell->status = 0;
+	datash->status = 0;
 
 	return (1);
 }

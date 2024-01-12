@@ -1,71 +1,69 @@
 #include "main.h"
 
 /**
- * generateEnvError - Generates error message for env command in get_env.
- * @shellData: Data relevant (counter, arguments).
- * Return: Error message.
+ * error_env - error message for env in get_env.
+ * @datash: data relevant (counter, arguments)
+ * Return: error message.
  */
-char *generateEnvError(data_shell *shellData)
+char *error_env(data_shell *datash)
 {
 	int length;
-	char *errorMessage;
-	char *l;
+	char *error;
+	char *ver_str;
 	char *msg;
 
-	l = aux_itoa(d->counter);
+	ver_str = aux_itoa(datash->counter);
 	msg = ": Unable to add/remove from environment\n";
-	len = _strlen(d->av[0]) + _strlen(l) + _strlen(d->args[0]) + _strlen(msg) + 4;
-	errorMessage = malloc(sizeof(char) * (length + 1));
-
-	if (errorMessage == NULL)
+	length = _strlen(datash->av[0]) + _strlen(ver_str);
+	length += _strlen(datash->args[0]) + _strlen(msg) + 4;
+	error = malloc(sizeof(char) * (length + 1));
+	if (error == 0)
 	{
-		free(errorMessage);
-		free(lineCounter);
+		free(error);
+		free(ver_str);
 		return (NULL);
 	}
 
-	_strcpy(errorMessage, shellData->av[0]);
-	_strcat(errorMessage, ": ");
-	_strcat(errorMessage, lineCounter);
-	_strcat(errorMessage, ": ");
-	_strcat(errorMessage, shellData->args[0]);
-	_strcat(errorMessage, message);
-	_strcat(errorMessage, "\0");
-	free(lineCounter);
+	_strcpy(error, datash->av[0]);
+	_strcat(error, ": ");
+	_strcat(error, ver_str);
+	_strcat(error, ": ");
+	_strcat(error, datash->args[0]);
+	_strcat(error, msg);
+	_strcat(error, "\0");
+	free(ver_str);
 
-	return (errorMessage);
+	return (error);
 }
-
 /**
- * generatePermissionDeniedError - g-rate er msg 4 path & falur due 2 deny pmsn
- * @shell_d: Data relevant (counter, arguments).
+ * error_path_126 - error message for path and failure denied permission.
+ * @datash: data relevant (counter, arguments).
+ *
  * Return: The error string.
  */
-char *generatePermissionDeniedError(data_shell *shell_d)
+char *error_path_126(data_shell *datash)
 {
-	int len;
-	char *lineC;
-	char *errorMessage;
+	int length;
+	char *ver_str;
+	char *error;
 
-	l_c = aux_itoa(shell_d->counter);
-	len = _strlen(shell_d->av[0]) + _strlen(l_c) + _strlen(shell_d->args[0]) + 24;
-	errorMessage = malloc(sizeof(char) * (length + 1));
-
-	if (errorMessage == NULL)
+	ver_str = aux_itoa(datash->counter);
+	length = _strlen(datash->av[0]) + _strlen(ver_str);
+	length += _strlen(datash->args[0]) + 24;
+	error = malloc(sizeof(char) * (length + 1));
+	if (error == 0)
 	{
-		free(errorMessage);
-		free(lineCounter);
+		free(error);
+		free(ver_str);
 		return (NULL);
 	}
-
-	_strcpy(errorMessage, shellData->av[0]);
-	_strcat(errorMessage, ": ");
-	_strcat(errorMessage, lineCounter);
-	_strcat(errorMessage, ": ");
-	_strcat(errorMessage, shellData->args[0]);
-	_strcat(errorMessage, ": Permission denied\n");
-	_strcat(errorMessage, "\0");
-	free(lineCounter);
-
-	return (errorMessage);
+	_strcpy(error, datash->av[0]);
+	_strcat(error, ": ");
+	_strcat(error, ver_str);
+	_strcat(error, ": ");
+	_strcat(error, datash->args[0]);
+	_strcat(error, ": Permission denied\n");
+	_strcat(error, "\0");
+	free(ver_str);
+	return (error);
 }

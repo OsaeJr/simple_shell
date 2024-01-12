@@ -1,17 +1,17 @@
 #include "main.h"
 
 /**
- * swap_special_chars - swaps | and & for non-printed chars
+ * swap_char - swaps | and & for non-printed chars
  *
  * @input: input string
- * @is_swap: type of swap
+ * @bool: type of swap
  * Return: swapped string
  */
-char *swap_special_chars(char *input, int is_swap)
+char *swap_char(char *input, int bool)
 {
 	int i;
 
-	if (is_swap == 0)
+	if (bool == 0)
 	{
 		for (i = 0; input[i]; i++)
 		{
@@ -44,109 +44,109 @@ char *swap_special_chars(char *input, int is_swap)
 }
 
 /**
- * add_sepa_n_lines - add separators and command lines in the lists
+ * add_nodes - add separators and command lines in the lists
  *
- * @sepa_list: head of separator list
- * @line_list: head of command lines list
+ * @head_s: head of separator list
+ * @head_l: head of command lines list
  * @input: input string
  * Return: no return
  */
-void add_sepa_n_lines(sep_list **sepa_list, line_list **line_list, char *input)
+void add_nodes(sep_list **head_s, line_list **head_l, char *input)
 {
 	int i;
 	char *line;
 
-	input = swap_special_chars(input, 0);
+	input = swap_char(input, 0);
 
 	for (i = 0; input[i]; i++)
 	{
 		if (input[i] == ';')
-			add_sep_node_end(separator_list, input[i]);
+			add_sep_node_end(head_s, input[i]);
 
 		if (input[i] == '|' || input[i] == '&')
 		{
-			add_sep_node_end(separator_list, input[i]);
+			add_sep_node_end(head_s, input[i]);
 			i++;
 		}
 	}
 
 	line = _strtok(input, ";|&");
 	do {
-		line = swap_special_chars(line, 1);
-		add_line_node_end(line_list, line);
+		line = swap_char(line, 1);
+		add_line_node_end(head_l, line);
 		line = _strtok(NULL, ";|&");
 	} while (line != NULL);
 
 }
 
 /**
- * mv_to_next - go to the next command line stored
+ * go_next - go to the next command line stored
  *
- * @sepa_list: separator list
- * @l_list: command line list
+ * @list_s: separator list
+ * @list_l: command line list
  * @datash: data structure
  * Return: no return
  */
-void mv_to_next(sep_list **sepa_list, line_list **l_list, data_shell *datash)
+void go_next(sep_list **list_s, line_list **list_l, data_shell *datash)
 {
-	int loop_separator;
-	sep_list *c_separator;
-	line_list *c_line;
+	int loop_sep;
+	sep_list *ls_s;
+	line_list *ls_l;
 
-	loop_separator = 1;
-	c_separator = *separator_list;
-	current_l = *line_list;
+	loop_sep = 1;
+	ls_s = *list_s;
+	ls_l = *list_l;
 
-	while (c_separator != NULL && loop_separator)
+	while (ls_s != NULL && loop_sep)
 	{
 		if (datash->status == 0)
 		{
-			if (c_separator->separator == '&' || current_separator->separator == ';')
-				loop_separator = 0;
-			if (c_separator->separator == '|')
-				c_line = c_line->next, c_separator = c_separator->next;
+			if (ls_s->separator == '&' || ls_s->separator == ';')
+				loop_sep = 0;
+			if (ls_s->separator == '|')
+				ls_l = ls_l->next, ls_s = ls_s->next;
 		}
 		else
 		{
-			if (c_separator->separator == '|' || c_separator->separator == ';')
-				loop_separator = 0;
-			if (c_separator->separator == '&')
-				c_line = current_line->next, c_separator = c_separator->next;
+			if (ls_s->separator == '|' || ls_s->separator == ';')
+				loop_sep = 0;
+			if (ls_s->separator == '&')
+				ls_l = ls_l->next, ls_s = ls_s->next;
 		}
-		if (c_separator != NULL && !loop_separator)
-			c_separator = c_separator->next;
+		if (ls_s != NULL && !loop_sep)
+			ls_s = ls_s->next;
 	}
 
-	*separator_list = c_separator;
-	*line_list = c_line;
+	*list_s = ls_s;
+	*list_l = ls_l;
 }
 
 /**
- * execute_commands - splits command lines according to
+ * split_commands - splits command lines according to
  * the separators ;, | and &, and executes them
  *
  * @datash: data structure
  * @input: input string
  * Return: 0 to exit, 1 to continue
  */
-int execute_commands(data_shell *datash, char *input)
+int split_commands(data_shell *datash, char *input)
 {
 
-	sep_list *separator_list, *current_separator;
-	line_list *line_list, *current_line;
+	sep_list *head_s, *list_s;
+	line_list *head_l, *list_l;
 	int loop;
 
-	separator_list = NULL;
-	line_list = NULL;
+	head_s = NULL;
+	head_l = NULL;
 
-	add_separator_and_lines(&separator_list, &line_list, input);
+	add_nodes(&head_s, &head_l, input);
 
-	current_separator = separator_list;
-	current_line = line_list;
+	list_s = head_s;
+	list_l = head_l;
 
-	while (current_line != NULL)
+	while (list_l != NULL)
 	{
-		datash->input = current_line->line;
+		datash->input = list_l->line;
 		datash->args = split_line(datash->input);
 		loop = exec_line(datash);
 		free(datash->args);
@@ -154,14 +154,14 @@ int execute_commands(data_shell *datash, char *input)
 		if (loop == 0)
 			break;
 
-		move_to_next(&current_separator, &current_line, datash);
+		go_next(&list_s, &list_l, datash);
 
-		if (current_line != NULL)
-			current_line = current_line->next;
+		if (list_l != NULL)
+			list_l = list_l->next;
 	}
 
-	free_sep_list(&separator_list);
-	free_line_list(&line_list);
+	free_sep_list(&head_s);
+	free_line_list(&head_l);
 
 	if (loop == 0)
 		return (0);

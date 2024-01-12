@@ -1,80 +1,83 @@
 #include "main.h"
 
 /**
- * count_repeated_chars - counts the repetitions of a character.
+ * repeated_char - counts the repetitions of a char
  *
- * @input: input string.
- * @index: index.
- * Return: repetitions.
+ * @input: input string
+ * @i: index
+ * Return: repetitions
  */
-int count_repeated_chars(char *input, int index)
+int repeated_char(char *input, int i)
 {
 	if (*(input - 1) == *input)
-		return (count_repeated_chars(input - 1, index + 1));
+		return (repeated_char(input - 1, i + 1));
 
-	return (index);
+	return (i);
 }
 
 /**
- * find_syntax_error - finds syntax errors.
+ * error_sep_op - finds syntax errors
  *
- * @input: input string.
- * @index: index.
- * @last_char: last character read.
- * Return: index of error. 0 when there are no errors.
+ * @input: input string
+ * @i: index
+ * @last: last char read
+ * Return: index of error. 0 when there are no
+ * errors
  */
-int find_syntax_error(char *input, int index, char last_char)
+int error_sep_op(char *input, int i, char last)
 {
-	int repetition_count;
+	int count;
 
+	count = 0;
 	if (*input == '\0')
 		return (0);
 
 	if (*input == ' ' || *input == '\t')
-		return (find_syntax_error(input + 1, index + 1, last_char));
+		return (error_sep_op(input + 1, i + 1, last));
 
 	if (*input == ';')
-		if (last_char == '|' || last_char == '&' || last_char == ';')
-			return (index);
+		if (last == '|' || last == '&' || last == ';')
+			return (i);
 
 	if (*input == '|')
 	{
-		if (last_char == ';' || last_char == '&')
-			return (index);
+		if (last == ';' || last == '&')
+			return (i);
 
-		if (last_char == '|')
+		if (last == '|')
 		{
-			repetition_count = count_repeated_chars(input, 0);
-			if (repetition_count == 0 || repetition_count > 1)
-				return (index);
+			count = repeated_char(input, 0);
+			if (count == 0 || count > 1)
+				return (i);
 		}
 	}
 
 	if (*input == '&')
 	{
-		if (last_char == ';' || last_char == '|')
-			return (index);
+		if (last == ';' || last == '|')
+			return (i);
 
-		if (last_char == '&')
+		if (last == '&')
 		{
-			repetition_count = count_repeated_chars(input, 0);
-			if (repetition_count == 0 || repetition_count > 1)
-				return (index);
+			count = repeated_char(input, 0);
+			if (count == 0 || count > 1)
+				return (i);
 		}
 	}
 
-	return (find_syntax_error(input + 1, index + 1, *input));
+	return (error_sep_op(input + 1, i + 1, *input));
 }
 
 /**
- * find_first_char - finds index of the first character.
+ * first_char - finds index of the first char
  *
- * @input: input string.
- * @i: index.
+ * @input: input string
+ * @i: index
  * Return: 1 if there is an error. 0 in other case.
  */
-int find_first_char(char *input, int *i)
+int first_char(char *input, int *i)
 {
+
 	for (*i = 0; input[*i]; *i += 1)
 	{
 		if (input[*i] == ' ' || input[*i] == '\t')
@@ -90,22 +93,22 @@ int find_first_char(char *input, int *i)
 }
 
 /**
- * display_syntax_error - prints when a syntax error is found.
+ * print_syntax_error - prints when a syntax error is found
  *
- * @datash: data structure.
- * @input: input string.
- * @i: index of the error.
- * @is_repet: to control error message.
- * Return: no return.
+ * @datash: data structure
+ * @input: input string
+ * @i: index of the error
+ * @bool: to control msg error
+ * Return: no return
  */
-void display_syntax_error(data_shell *datash, char *input, int i, int is_repet)
+void print_syntax_error(data_shell *datash, char *input, int i, int bool)
 {
 	char *msg, *msg2, *msg3, *error, *counter;
 	int length;
 
 	if (input[i] == ';')
 	{
-		if (is_repet == 0)
+		if (bool == 0)
 			msg = (input[i + 1] == ';' ? ";;" : ";");
 		else
 			msg = (input[i - 1] == ';' ? ";;" : ";");
@@ -143,32 +146,32 @@ void display_syntax_error(data_shell *datash, char *input, int i, int is_repet)
 }
 
 /**
- * check_syntax_errors - intermediate func to find and print a syntax error.
+ * check_syntax_error - intermediate function to
+ * find and print a syntax error
  *
- * @datash: data structure.
- * @input: input string.
- * Return: 1 if there is an error. 0 in other case.
+ * @datash: data structure
+ * @input: input string
+ * Return: 1 if there is an error. 0 in other case
  */
-int check_syntax_errors(data_shell *datash, char *input)
+int check_syntax_error(data_shell *datash, char *input)
 {
-	int start = 0;
-	int first_char_result = 0;
-	int index = 0;
+	int begin = 0;
+	int f_char = 0;
+	int i = 0;
 
-	first_char_result = find_first_char(input, &start);
-	if (first_char_result == -1)
+	f_char = first_char(input, &begin);
+	if (f_char == -1)
 	{
-		display_syntax_error(datash, input, start, 0);
+		print_syntax_error(datash, input, begin, 0);
 		return (1);
 	}
 
-	index = find_syntax_error(input + start, 0, *(input + start));
-	if (index != 0)
+	i = error_sep_op(input + begin, 0, *(input + begin));
+	if (i != 0)
 	{
-		display_syntax_error(datash, input, start + index, 1);
+		print_syntax_error(datash, input, begin + i, 1);
 		return (1);
 	}
 
 	return (0);
 }
-

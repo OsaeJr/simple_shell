@@ -1,125 +1,106 @@
 #include "main.h"
 
 /**
- * _strcat - Concatenate two strings.
- * @destination: Pointer to the destination of the copied string.
- * @source: Pointer to the source string.
- * Return: Pointer to the destination string.
- *
- * Description: This function concatenates the string pointed to by source
- * to the end of the string pointed to by destination.
+ * _strcat - concatenate two strings
+ * @dest: char pointer the dest of the copied str
+ * @src: const char pointer the source of str
+ * Return: the dest
  */
-char *_strcat(char *destination, const char *source)
+char *_strcat(char *dest, const char *src)
 {
-	int dest_index;
-	int src_index;
+	int i;
+	int j;
 
-	for (dest_index = 0; destination[dest_index] != '\0'; dest_index++)
+	for (i = 0; dest[i] != '\0'; i++)
 		;
 
-	for (src_index = 0; source[src_index] != '\0'; src_index++)
+	for (j = 0; src[j] != '\0'; j++)
 	{
-		destination[dest_index] = source[src_index];
-		dest_index++;
+		dest[i] = src[j];
+		i++;
 	}
 
-	destination[dest_index] = '\0';
-	return (destination);
+	dest[i] = '\0';
+	return (dest);
 }
-
 /**
- * _strcpy - Copy a string from source to destination.
- * @destination: Pointer to the destination of the copied string.
- * @source: Pointer to the source string.
- * Return: Pointer to the destination string.
- *
- * Description: This function copies the string pointed to by source
- * (including the null-terminator) to the buffer pointed to by destination.
+ * *_strcpy - Copies the string pointed to by src.
+ * @dest: Type char pointer the dest of the copied str
+ * @src: Type char pointer the source of str
+ * Return: the dest.
  */
-char *_strcpy(char *destination, char *source)
+char *_strcpy(char *dest, char *src)
 {
-	size_t index;
 
-	for (index = 0; source[index] != '\0'; index++)
+	size_t a;
+
+	for (a = 0; src[a] != '\0'; a++)
 	{
-		destination[index] = source[index];
+		dest[a] = src[a];
 	}
-	destination[index] = '\0';
+	dest[a] = '\0';
 
-	return (destination);
+	return (dest);
 }
-
 /**
- * _strcmp - Compare two strings.
- * @str1: First string to be compared.
- * @str2: Second string to be compared.
- * Return: 0 if str are equal, +tive if str1 is gr8ter, _tive if str2 is g8ter.
- * Description: This function compares the strings str1 and str2.
+ * _strcmp - Function that compares two strings.
+ * @s1: type str compared
+ * @s2: type str compared
+ * Return: Always 0.
  */
-int _strcmp(char *str1, char *str2)
+int _strcmp(char *s1, char *s2)
 {
-	int index;
+	int i;
 
-	for (index = 0; str1[index] == str2[index] && str1[index]; index++)
+	for (i = 0; s1[i] == s2[i] && s1[i]; i++)
 		;
 
-	if (str1[index] > str2[index])
+	if (s1[i] > s2[i])
 		return (1);
-	if (str1[index] < str2[index])
+	if (s1[i] < s2[i])
 		return (-1);
 	return (0);
 }
-
 /**
- * _strchr - Locate a character in a string.
- * @str: String to be searched.
- * @character: Character to be located.
- * Return: Pointer to the first occurrence of the character in the string.
- *
- * Description: This func searches for the first occurrence of the character
- * c (an unsigned char) in the string pointed to by the argument str.
+ * _strchr - locates a character in a string,
+ * @s: string.
+ * @c: character.
+ * Return: the pointer to the first occurrence of the character c.
  */
-char *_strchr(char *str, char character)
+char *_strchr(char *s, char c)
 {
-	unsigned int index = 0;
+	unsigned int i = 0;
 
-	for (; *(str + index) != '\0'; index++)
-		if (*(str + index) == character)
-			return (str + index);
-	if (*(str + index) == character)
-		return (str + index);
-
+	for (; *(s + i) != '\0'; i++)
+		if (*(s + i) == c)
+			return (s + i);
+	if (*(s + i) == c)
+		return (s + i);
 	return ('\0');
 }
-
 /**
- * _strspn - Get the length of a prefix substring.
- * @s: Initial segment.
- * @accept: Accepted bytes.
- * Return: The number of accepted bytes.
- *
- * Description: This function calculates the length of the initial segment
- * of s which consists entirely of bytes in accept.
+ * _strspn - gets the length of a prefix substring.
+ * @s: initial segment.
+ * @accept: accepted bytes.
+ * Return: the number of accepted bytes.
  */
 int _strspn(char *s, char *accept)
 {
-	int i, j, match;
+	int i, j, bool;
 
-	for (i = 0; s[i] != '\0'; i++)
+	for (i = 0; *(s + i) != '\0'; i++)
 	{
-		match = 1;
-		for (j = 0; accept[j] != '\0'; j++)
+		bool = 1;
+		for (j = 0; *(accept + j) != '\0'; j++)
 		{
-			if (s[i] == accept[j])
+			if (*(s + i) == *(accept + j))
 			{
-				match = 0;
+				bool = 0;
 				break;
 			}
 		}
-		if (match == 1)
+		if (bool == 1)
 			break;
 	}
-
 	return (i);
 }
-
