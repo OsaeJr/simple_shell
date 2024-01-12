@@ -15,7 +15,7 @@ int main(int argc, char **argv, char **envp)
 
 	while (1)
 	{
-		input_command = _read_line_command();
+		input_command = read_command();
 		if (input_command)
 		{
 			iteration++;
